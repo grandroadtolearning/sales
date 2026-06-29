@@ -3,953 +3,653 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>118 學測高一上｜得勝者文教</title>
+<title>得勝者文教｜升學課程</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --math:   #2d6a4f;
-  --eng:    #1d3557;
-  --sci-p:  #5c3d8f;
-  --sci-c:  #7b2d8b;
-  --chi:    #9b2335;
-  --essay:  #7b6020;
-  --bg:     #f5f4f0;
-  --card:   #ffffff;
-  --border: #e8e8e8;
-  --text:   #1e1e1e;
-  --muted:  #888;
-  --gold:   #c17f00;
-  --gold-bg:#fff8e7;
-  --navy:   #1a1a2e;
+  --math:#2d6a4f; --eng:#1d3557; --sci-p:#5c3d8f; --sci-c:#7b2d8b;
+  --chi:#9b2335; --essay:#7b6020; --bg:#f5f4f0; --card:#fff;
+  --border:#e8e8e8; --text:#1e1e1e; --muted:#888;
+  --gold:#c17f00; --gold-bg:#fff8e7; --navy:#1a1a2e;
 }
+body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
 
-body {
-  font-family: "Noto Sans TC","Microsoft JhengHei",sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-}
-
-/* ══════════════════════════
-   TOP NAV
-══════════════════════════ */
-.top-nav {
-  background: var(--navy);
-  color: white;
-  padding: 0 24px;
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 2px 12px rgba(0,0,0,.3);
-}
-.nav-brand {
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 12px 20px 12px 0;
-  border-right: 1px solid rgba(255,255,255,.1);
-  margin-right: 16px;
-  flex-shrink: 0;
-}
-.nav-brand h1 { font-size: 15px; font-weight: 700; letter-spacing: .5px; }
-.nav-brand p  { font-size: 10px; color: #a0a8c8; margin-top: 2px; }
-.nav-tabs { display: flex; align-items: stretch; gap: 4px; }
+/* NAV */
+.top-nav { background:var(--navy); color:white; padding:0 20px; display:flex; align-items:stretch; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.nav-brand { display:flex; flex-direction:column; justify-content:center; padding:10px 18px 10px 0; border-right:1px solid rgba(255,255,255,.1); margin-right:14px; flex-shrink:0; }
+.nav-brand h1 { font-size:14px; font-weight:700; }
+.nav-brand p  { font-size:10px; color:#a0a8c8; margin-top:2px; }
+.nav-tabs { display:flex; align-items:stretch; }
 .nav-tab {
-  padding: 0 20px;
-  display: flex; align-items: center; gap: 7px;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,.55);
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: all .2s;
-  white-space: nowrap;
-  user-select: none;
+  padding:0 16px; display:flex; align-items:center; gap:5px;
+  font-size:12px; font-weight:600; color:rgba(255,255,255,.5);
+  cursor:pointer; border-bottom:3px solid transparent; transition:all .2s; white-space:nowrap; user-select:none;
 }
-.nav-tab:hover { color: rgba(255,255,255,.85); }
-.nav-tab.active {
-  color: white;
-  border-bottom-color: #e8b84b;
-}
-.nav-badge {
-  background: #e8b84b;
-  color: var(--navy);
-  font-size: 10px; font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 20px;
-  margin-left: 4px;
-}
+.nav-tab:hover { color:rgba(255,255,255,.85); }
+.nav-tab.active { color:white; border-bottom-color:#e8b84b; }
+.nav-badge { background:#e8b84b; color:var(--navy); font-size:9px; font-weight:700; padding:2px 5px; border-radius:10px; }
+.nav-badge.red { background:#e05c5c; color:white; }
 
-/* ══════════════════════════
-   TAB PANELS
-══════════════════════════ */
-.tab-panel { display: none; flex: 1; }
-.tab-panel.active { display: flex; flex-direction: column; }
+/* GRADE BAR */
+.grade-bar { background:white; border-bottom:1px solid var(--border); padding:8px 20px; display:flex; gap:7px; align-items:center; flex-wrap:wrap; flex-shrink:0; }
+.grade-bar-lbl { font-size:10px; color:var(--muted); font-weight:600; margin-right:3px; }
+.grade-pill {
+  padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700;
+  cursor:pointer; border:2px solid var(--border); background:white; color:var(--muted);
+  transition:all .15s; white-space:nowrap; user-select:none;
+}
+.grade-pill:hover { border-color:var(--navy); color:var(--navy); }
+.grade-pill.active { background:var(--navy); color:white; border-color:var(--navy); }
 
-/* ══════════════════════════
-   PANEL 1: 文宣
-══════════════════════════ */
-#panel-flyer {
-  padding: 24px;
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  flex-direction: column;
-  gap: 0;
-}
+/* PANELS */
+.tab-panel { display:none; flex:1; flex-direction:column; }
+.tab-panel.active { display:flex; }
 
-.section-title {
-  font-size: 11px; font-weight: 700; color: #888;
-  letter-spacing: 2px; text-transform: uppercase;
-  margin: 20px 0 8px;
-}
+/* FLYER */
+.flyer-scroll { padding:18px 20px 28px; max-width:900px; width:100%; margin:0 auto; }
+.section-title { font-size:10px; font-weight:700; color:#888; letter-spacing:2px; text-transform:uppercase; margin:16px 0 7px; }
+.premium-card { background:linear-gradient(135deg,#1a1a2e,#0f3460); border-radius:14px; padding:18px 20px; color:white; position:relative; margin-bottom:13px; }
+.premium-card::before { content:"★ 頂尖升學首選"; position:absolute; top:12px; right:14px; font-size:10px; color:#e8b84b; font-weight:700; }
+.prem-name { font-size:15px; font-weight:700; margin-bottom:3px; }
+.prem-desc { font-size:11px; color:#a0a8c8; margin-bottom:10px; }
+.prem-stages { display:flex; gap:7px; flex-wrap:wrap; }
+.prem-stage { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:7px 11px; font-size:11px; flex:1; min-width:150px; }
+.ps-name { font-weight:600; margin-bottom:1px; }
+.ps-date { color:#a0a8c8; font-size:10px; }
+.ps-price { color:#e8b84b; font-weight:700; font-size:14px; margin-top:3px; }
+.combo-banner { background:var(--gold-bg); border:2px solid #e8b84b; border-radius:14px; padding:14px 18px; margin-bottom:13px; }
+.combo-title { font-size:12px; font-weight:700; color:#7a5c00; margin-bottom:9px; }
+.combo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+.combo-item { background:white; border-radius:9px; padding:9px; text-align:center; border:1px solid #f0dfa0; }
+.combo-lbl  { font-size:10px; color:#888; margin-bottom:2px; }
+.combo-save { font-size:16px; font-weight:700; color:#c17f00; }
+.combo-note { font-size:9px; color:#bbb; margin-top:1px; }
+.return-notice { background:#f0f4ff; border:2px solid #6688cc; border-radius:12px; padding:10px 15px; margin-bottom:13px; font-size:11px; color:#2244aa; font-weight:600; }
+.example-box { background:#f0faf4; border-left:4px solid var(--math); border-radius:0 10px 10px 0; padding:11px 15px; margin-bottom:13px; }
+.example-title { font-size:11px; font-weight:700; color:var(--math); margin-bottom:5px; }
+.example-row { display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px; }
+.example-total { display:flex; justify-content:space-between; font-weight:700; font-size:13px; border-top:1px solid #cce8d4; padding-top:5px; margin-top:4px; }
+.save-tag { background:var(--math); color:white; font-size:10px; padding:1px 6px; border-radius:5px; margin-left:4px; }
+.subject-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:13px; }
+.subject-card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.06); }
+.subject-head { padding:8px 12px; display:flex; align-items:center; gap:7px; }
+.subject-icon  { font-size:15px; }
+.subject-label { font-size:11px; font-weight:700; color:white; }
+.course-row { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid #f0f0f0; gap:8px; }
+.course-row:last-child { border-bottom:none; }
+.c-name { font-size:12px; font-weight:600; }
+.c-meta { font-size:10px; color:#999; margin-top:1px; }
+.c-price { font-size:13px; font-weight:700; white-space:nowrap; }
+.c-price-stack { text-align:right; }
+.c-striked { font-size:10px; color:#bbb; text-decoration:line-through; }
+.cta-btn { background:var(--navy); color:white; border:none; border-radius:12px; padding:12px 22px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; width:100%; text-align:center; display:block; margin:4px 0; transition:background .2s; }
+.cta-btn:hover { background:#2a2a4e; }
+.flyer-footer { text-align:center; font-size:10px; color:#aaa; margin-top:6px; }
 
-/* Premium card */
-.premium-card {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-  border-radius: 14px; padding: 22px 24px;
-  color: white; position: relative; overflow: hidden; margin-bottom: 16px;
-}
-.premium-card::before {
-  content: "★ 頂尖升學首選";
-  position: absolute; top: 14px; right: 16px;
-  font-size: 11px; color: #e8b84b; font-weight: 600; letter-spacing: 1px;
-}
-.premium-name { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-.premium-desc { font-size: 12px; color: #a0a8c8; margin-bottom: 14px; }
-.premium-stages { display: flex; gap: 8px; flex-wrap: wrap; }
-.stage-chip {
-  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-  border-radius: 8px; padding: 8px 14px; font-size: 12px; flex: 1; min-width: 170px;
-}
-.stage-chip .sname { font-weight: 600; margin-bottom: 2px; }
-.stage-chip .sdate { color: #a0a8c8; font-size: 11px; }
-.stage-chip .sprice { color: #e8b84b; font-weight: 700; font-size: 15px; margin-top: 4px; }
+/* CONFIG */
+.config-layout { flex:1; display:flex; overflow:hidden; }
+.sidebar { width:290px; min-width:240px; background:var(--card); border-right:1px solid var(--border); overflow-y:auto; display:flex; flex-direction:column; flex-shrink:0; }
+.sidebar-hdr { background:var(--navy); color:white; padding:11px 15px; position:sticky; top:0; z-index:10; }
+.sidebar-hdr h2 { font-size:12px; font-weight:700; }
+.sidebar-hdr p  { font-size:10px; color:#a0a8c8; margin-top:2px; }
+.grp { border-bottom:1px solid var(--border); }
+.grp-hdr { display:flex; align-items:center; gap:7px; padding:8px 13px; font-size:11px; font-weight:700; letter-spacing:1px; position:sticky; top:48px; z-index:5; background:#f7f7f7; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; }
+.grp-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.grp-chev { margin-left:auto; font-size:9px; color:#bbb; transition:transform .2s; }
+.grp.collapsed .grp-chev { transform:rotate(-90deg); }
+.grp.collapsed .grp-body { display:none; }
+.c-chip { display:flex; align-items:center; gap:8px; padding:8px 13px; cursor:pointer; border-bottom:1px solid #f5f5f5; transition:background .1s; }
+.c-chip:hover { background:#fafafa; }
+.c-chip.selected { background:#f0faf4; }
+.c-chk { width:17px; height:17px; border-radius:5px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:10px; color:white; transition:all .15s; }
+.c-chip.selected .c-chk { background:var(--chip-color,#2d6a4f); border-color:var(--chip-color,#2d6a4f); }
+.c-chip-info { flex:1; min-width:0; }
+.c-chip-name { font-size:12px; font-weight:600; }
+.c-chip-meta { font-size:10px; color:var(--muted); margin-top:1px; }
+.c-chip-price { font-size:11px; font-weight:700; color:var(--muted); white-space:nowrap; }
+.c-chip.selected .c-chip-price { color:var(--chip-color,#2d6a4f); }
+.clear-btn { margin:8px 13px; padding:5px 12px; border:1px solid var(--border); background:white; border-radius:7px; font-size:11px; color:var(--muted); cursor:pointer; width:calc(100% - 26px); font-family:inherit; }
+.clear-btn:hover { background:#f5f5f5; }
+.cfg-main { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+.summary-bar { background:var(--navy); color:white; border-radius:14px; padding:13px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; }
+.sum-left .slabel { font-size:10px; color:#a0a8c8; }
+.sum-left .sval   { font-size:21px; font-weight:700; margin-top:1px; }
+.sum-right { display:flex; gap:7px; flex-wrap:wrap; }
+.sum-chip { background:rgba(255,255,255,.1); border-radius:9px; padding:6px 11px; text-align:center; min-width:72px; }
+.sum-chip .sc-l { font-size:9px; color:#a0a8c8; }
+.sum-chip .sc-v { font-size:13px; font-weight:700; }
+.sum-chip.green .sc-v { color:#5ee08a; }
+.cfg-notice { background:var(--gold-bg); border:2px solid #e8b84b; border-radius:11px; padding:8px 13px; font-size:12px; color:#7a5c00; font-weight:600; display:none; }
+.cfg-notice.show { display:block; }
+.cal-card { background:var(--card); border-radius:13px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.05); }
+.cal-title { padding:10px 15px; font-size:12px; font-weight:700; border-bottom:1px solid var(--border); }
+.cal-grid { display:grid; grid-template-columns:36px repeat(7,1fr); }
+.cal-head { background:#f7f7f7; text-align:center; padding:5px 3px; font-size:10px; font-weight:700; border-bottom:1px solid var(--border); border-right:1px solid var(--border); }
+.cal-head:last-child { border-right:none; }
+.cal-tlabel { font-size:9px; color:var(--muted); display:flex; align-items:center; justify-content:center; border-right:1px solid var(--border); border-bottom:1px solid var(--border); padding:2px; }
+.cal-cell { border-right:1px solid var(--border); border-bottom:1px solid var(--border); min-height:42px; padding:2px; display:flex; flex-direction:column; gap:2px; }
+.cal-cell:last-child { border-right:none; }
+.cal-event { border-radius:4px; padding:2px 4px; font-size:9px; font-weight:600; color:white; line-height:1.3; }
+.list-card { background:var(--card); border-radius:13px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.05); }
+.list-title { padding:10px 15px; font-size:12px; font-weight:700; border-bottom:1px solid var(--border); }
+.list-row { display:flex; align-items:center; justify-content:space-between; padding:9px 15px; border-bottom:1px solid #f5f5f5; gap:9px; }
+.list-row:last-child { border-bottom:none; }
+.lr-name { font-size:12px; font-weight:600; }
+.lr-meta { font-size:10px; color:var(--muted); margin-top:1px; }
+.price-line { display:flex; align-items:center; gap:5px; }
+.striked { text-decoration:line-through; color:#bbb; font-size:10px; font-weight:400; }
+.empty-state { padding:32px 14px; text-align:center; color:var(--muted); font-size:12px; }
 
-/* Combo banner */
-.combo-banner {
-  background: var(--gold-bg); border: 2px solid #e8b84b;
-  border-radius: 14px; padding: 18px 22px; margin-bottom: 16px;
-}
-.combo-banner-title { font-size: 14px; font-weight: 700; color: #7a5c00; margin-bottom: 12px; }
-.combo-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-}
-.combo-item {
-  background: white; border-radius: 10px; padding: 10px;
-  text-align: center; border: 1px solid #f0dfa0;
-}
-.combo-label { font-size: 11px; color: #888; margin-bottom: 4px; }
-.combo-save  { font-size: 18px; font-weight: 700; color: #c17f00; }
-.combo-note  { font-size: 10px; color: #bbb; margin-top: 2px; }
+/* TRIAL */
+.trial-scroll { padding:18px 20px 28px; max-width:900px; width:100%; margin:0 auto; }
+.incentive-bar { background:linear-gradient(135deg,#1a1a2e,#0f3460); border-radius:14px; padding:15px 20px; color:white; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:11px; margin-bottom:16px; }
+.inc-chips { display:flex; gap:9px; flex-wrap:wrap; }
+.i-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:7px 13px; text-align:center; }
+.ic-icon { font-size:17px; }
+.ic-text { font-size:10px; color:#d0d8f0; margin-top:2px; }
+.ic-val  { font-size:11px; font-weight:700; color:#e8b84b; margin-top:1px; }
+.trial-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-bottom:16px; }
+.trial-card { background:white; border-radius:14px; overflow:hidden; box-shadow:0 1px 8px rgba(0,0,0,.07); }
+.tc-head { padding:10px 13px; display:flex; align-items:center; gap:8px; }
+.tc-icon { font-size:19px; }
+.tc-subj { font-size:10px; font-weight:700; color:rgba(255,255,255,.7); }
+.tc-teacher { font-size:13px; font-weight:700; color:white; margin-top:1px; }
+.tc-body { padding:9px 13px; }
+.tc-sess { display:flex; align-items:flex-start; gap:8px; padding:6px 0; border-bottom:1px solid #f0f0f0; }
+.tc-sess:last-child { border-bottom:none; }
+.tc-badge { font-size:9px; font-weight:700; color:white; padding:2px 6px; border-radius:5px; white-space:nowrap; margin-top:2px; flex-shrink:0; }
+.tc-date { font-size:12px; font-weight:600; }
+.tc-time { font-size:10px; color:#888; margin-top:1px; }
+.tc-note { font-size:10px; color:#c17f00; margin-top:1px; font-weight:600; }
+.trial-cta { background:#e05c5c; color:white; border:none; border-radius:14px; padding:13px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; width:100%; display:block; text-align:center; text-decoration:none; margin-bottom:7px; transition:background .2s; }
+.trial-cta:hover { background:#c94747; }
+.trial-note { text-align:center; font-size:10px; color:#aaa; }
 
-/* Example box */
-.example-box {
-  background: #f0faf4; border-left: 4px solid var(--math);
-  border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 16px;
-}
-.example-title { font-size: 12px; font-weight: 700; color: var(--math); margin-bottom: 8px; }
-.example-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
-.example-row.etotal {
-  font-weight: 700; font-size: 14px;
-  border-top: 1px solid #cce8d4; padding-top: 8px; margin-top: 4px;
-}
-.save-tag {
-  background: var(--math); color: white;
-  font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-left: 6px;
-}
-
-/* Subject grid */
-.subject-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
-}
-.subject-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
-.subject-header { padding: 10px 14px; display: flex; align-items: center; gap: 8px; }
-.subject-icon  { font-size: 18px; }
-.subject-label { font-size: 13px; font-weight: 700; color: white; }
-.s-math .subject-header  { background: var(--math); }
-.s-eng  .subject-header  { background: var(--eng);  }
-.s-sci  .subject-header  { background: var(--sci-p);}
-.s-chi  .subject-header  { background: var(--chi);  }
-.s-comp .subject-header  { background: var(--essay);}
-.course-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 14px; border-bottom: 1px solid #f0f0f0; gap: 8px;
-}
-.course-row:last-child { border-bottom: none; }
-.course-name { font-size: 13px; font-weight: 600; }
-.course-meta { font-size: 11px; color: #999; margin-top: 2px; }
-.course-price { font-size: 15px; font-weight: 700; color: var(--math); white-space: nowrap; }
-.price-stack  { text-align: right; }
-.course-price.xout { font-size: 12px; color: #bbb; text-decoration: line-through; font-weight: 400; }
-.price-final  { font-size: 15px; font-weight: 700; color: var(--math); }
-
-.flyer-footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 4px; padding-bottom: 24px; }
-
-/* ══════════════════════════
-   PANEL 2: 配置器
-══════════════════════════ */
-#panel-config {
-  flex-direction: row;
-  height: calc(100vh - 49px);
-  overflow: hidden;
-}
-
-.sidebar {
-  width: 320px; min-width: 260px;
-  background: var(--card);
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  display: flex; flex-direction: column;
-  flex-shrink: 0;
-}
-.sidebar-header {
-  background: var(--navy); color: white;
-  padding: 14px 18px; position: sticky; top: 0; z-index: 10;
-}
-.sidebar-header h2 { font-size: 13px; font-weight: 700; }
-.sidebar-header p  { font-size: 11px; color: #a0a8c8; margin-top: 3px; }
-
-.group { border-bottom: 1px solid var(--border); }
-.group-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
-  position: sticky; top: 54px; z-index: 5;
-  background: #f7f7f7; border-bottom: 1px solid var(--border);
-  cursor: pointer; user-select: none;
-}
-.group-header .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.group-header .chev { margin-left: auto; transition: transform .2s; font-size: 10px; color: #bbb; }
-.group.collapsed .chev { transform: rotate(-90deg); }
-.group.collapsed .group-body { display: none; }
-
-.course-chip {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; cursor: pointer;
-  border-bottom: 1px solid #f5f5f5; transition: background .1s;
-}
-.course-chip:hover { background: #fafafa; }
-.course-chip.selected { background: #f0faf4; }
-.chip-check {
-  width: 20px; height: 20px; border-radius: 6px;
-  border: 2px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; font-size: 12px; color: white; transition: all .15s;
-}
-.course-chip.selected .chip-check { background: var(--accent,#2d6a4f); border-color: var(--accent,#2d6a4f); }
-.chip-info { flex: 1; min-width: 0; }
-.chip-cname { font-size: 13px; font-weight: 600; }
-.chip-cmeta { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.chip-cprice { font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; text-align: right; }
-.course-chip.selected .chip-cprice { color: var(--accent,#2d6a4f); }
-.clear-btn {
-  margin: 10px 16px; padding: 6px 14px;
-  border: 1px solid var(--border); background: white;
-  border-radius: 8px; font-size: 12px; color: var(--muted);
-  cursor: pointer; width: calc(100% - 32px);
-}
-.clear-btn:hover { background: #f5f5f5; }
-
-.cfg-main {
-  flex: 1; overflow-y: auto; padding: 20px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-
-.summary-bar {
-  background: var(--navy); color: white; border-radius: 14px;
-  padding: 16px 22px; display: flex; align-items: center;
-  justify-content: space-between; flex-wrap: wrap; gap: 10px;
-}
-.summary-left .slabel { font-size: 11px; color: #a0a8c8; }
-.summary-left .sval   { font-size: 22px; font-weight: 700; margin-top: 2px; }
-.summary-right { display: flex; gap: 10px; flex-wrap: wrap; }
-.sum-chip {
-  background: rgba(255,255,255,.1); border-radius: 10px;
-  padding: 8px 14px; text-align: center; min-width: 80px;
-}
-.sum-chip .sc-label { font-size: 10px; color: #a0a8c8; }
-.sum-chip .sc-val   { font-size: 14px; font-weight: 700; }
-.sum-chip.green .sc-val { color: #5ee08a; }
-
-.combo-notice {
-  background: var(--gold-bg); border: 2px solid #e8b84b;
-  border-radius: 12px; padding: 10px 16px;
-  font-size: 13px; color: #7a5c00; font-weight: 600; display: none;
-}
-.combo-notice.show { display: block; }
-
-.calendar-card { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
-.calendar-title { padding: 12px 18px; font-size: 13px; font-weight: 700; border-bottom: 1px solid var(--border); }
-.cal-grid {
-  display: grid; grid-template-columns: 40px repeat(7, 1fr);
-}
-.cal-head {
-  background: #f7f7f7; text-align: center; padding: 7px 4px;
-  font-size: 12px; font-weight: 700;
-  border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
-}
-.cal-head:last-child { border-right: none; }
-.cal-tlabel {
-  font-size: 10px; color: var(--muted);
-  display: flex; align-items: center; justify-content: center;
-  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  padding: 4px 2px; text-align: center;
-}
-.cal-cell {
-  border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  min-height: 48px; padding: 3px;
-  display: flex; flex-direction: column; gap: 2px;
-}
-.cal-cell:last-child { border-right: none; }
-.cal-event {
-  border-radius: 5px; padding: 2px 5px;
-  font-size: 10px; font-weight: 600; color: white; line-height: 1.3;
-}
-
-.list-card { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.05); }
-.list-title { padding: 12px 18px; font-size: 13px; font-weight: 700; border-bottom: 1px solid var(--border); }
-.list-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 18px; border-bottom: 1px solid #f5f5f5; gap: 10px;
-}
-.list-row:last-child { border-bottom: none; }
-.lr-name { font-size: 13px; font-weight: 600; }
-.lr-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.price-line { display: flex; align-items: center; gap: 6px; }
-.striked { text-decoration: line-through; color: #bbb; font-size: 12px; font-weight: 400; }
-.empty-state { padding: 40px 18px; text-align: center; color: var(--muted); font-size: 13px; }
-
-/* ══════════════════════════
-   PANEL 3: 試聽
-══════════════════════════ */
-#panel-trial {
-  padding: 24px;
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  flex-direction: column;
-}
-
-.incentive-bar {
-  background: linear-gradient(135deg,#1a1a2e,#0f3460);
-  border-radius: 14px; padding: 18px 24px; color: white;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
-}
-.incentive-bar h2 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-.incentive-chips { display: flex; gap: 10px; flex-wrap: wrap; }
-.i-chip {
-  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
-  border-radius: 10px; padding: 8px 14px; text-align: center;
-}
-.i-chip .ic-icon { font-size: 20px; }
-.i-chip .ic-text { font-size: 12px; color: #d0d8f0; margin-top: 3px; }
-.i-chip .ic-val  { font-size: 13px; font-weight: 700; color: #e8b84b; margin-top: 2px; }
-
-.trial-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;
-}
-.trial-card {
-  background: white; border-radius: 14px;
-  overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.07);
-}
-.tc-header {
-  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
-}
-.tc-icon { font-size: 22px; }
-.tc-subject { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.75); }
-.tc-teacher { font-size: 15px; font-weight: 700; color: white; margin-top: 1px; }
-.tc-body { padding: 12px 16px; }
-.tc-session {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 8px 0; border-bottom: 1px solid #f0f0f0;
-}
-.tc-session:last-child { border-bottom: none; }
-.tc-badge {
-  font-size: 10px; font-weight: 700; color: white;
-  padding: 2px 7px; border-radius: 6px; white-space: nowrap; margin-top: 1px; flex-shrink: 0;
-}
-.tc-info {}
-.tc-date { font-size: 13px; font-weight: 600; }
-.tc-time { font-size: 11px; color: #888; margin-top: 1px; }
-.tc-note { font-size: 11px; color: #c17f00; margin-top: 2px; font-weight: 600; }
-
-.trial-cta {
-  background: #e05c5c; color: white; border: none;
-  border-radius: 14px; padding: 16px 28px; font-size: 16px; font-weight: 700;
-  cursor: pointer; font-family: inherit; width: 100%; display: block;
-  text-align: center; text-decoration: none; margin-bottom: 10px;
-  transition: background .2s;
-}
-.trial-cta:hover { background: #c94747; }
-.trial-note { text-align: center; font-size: 11px; color: #aaa; margin-bottom: 24px; }
-
-/* ── Responsive ── */
-@media (max-width: 680px) {
-  #panel-config { flex-direction: column; height: auto; overflow: auto; }
-  .sidebar { width: 100%; min-width: 0; }
-  .subject-grid { grid-template-columns: 1fr; }
-  .combo-grid { grid-template-columns: repeat(2,1fr); }
-  .trial-grid { grid-template-columns: 1fr; }
+@media (max-width:700px) {
+  .config-layout { flex-direction:column; }
+  .sidebar { width:100%; min-width:0; }
+  .subject-grid { grid-template-columns:1fr; }
+  .combo-grid { grid-template-columns:repeat(2,1fr); }
+  .trial-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══ Top Nav ══ -->
+<!-- NAV -->
 <nav class="top-nav">
-  <div class="nav-brand">
-    <h1>118 學測高一上</h1>
-    <p>得勝者文教</p>
-  </div>
+  <div class="nav-brand"><h1>得勝者文教</h1><p>升學課程</p></div>
   <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('flyer')" id="tab-flyer">
-      📄 課程總覽
-    </div>
-    <div class="nav-tab" onclick="switchTab('config')" id="tab-config">
-      🧮 選課配置器
-      <span class="nav-badge">互動</span>
-    </div>
-    <div class="nav-tab" onclick="switchTab('trial')" id="tab-trial">
-      🎧 免費試聽
-      <span class="nav-badge" style="background:#e05c5c">報名</span>
-    </div>
+    <div class="nav-tab active" onclick="switchTab('flyer')" id="tab-flyer">📄 課程總覽</div>
+    <div class="nav-tab" onclick="switchTab('config')" id="tab-config">🧮 選課配置器 <span class="nav-badge">互動</span></div>
+    <div class="nav-tab" onclick="switchTab('trial')" id="tab-trial">🎧 免費試聽 <span class="nav-badge red">高一</span></div>
   </div>
 </nav>
 
-<!-- ══════════════════════════════
-     PANEL 1: 文宣
-══════════════════════════════ -->
+<!-- ══ FLYER PANEL ══ -->
 <div class="tab-panel active" id="panel-flyer">
-
-  <div class="section-title">🏆 數學旗艦班（頂尖升學路線）</div>
-  <div class="premium-card">
-    <div class="premium-name">數學巔峰班　三階段完整制霸</div>
-    <div class="premium-desc">銜接→基礎→衝刺，從暑假一路備戰到學測前</div>
-    <div class="premium-stages">
-      <div class="stage-chip">
-        <div class="sname">第一階段　銜接期</div>
-        <div class="sdate">115/6/13 – 115/10/31</div>
-        <div class="sprice">$35,000</div>
-      </div>
-      <div class="stage-chip">
-        <div class="sname">第二階段　鞏固期</div>
-        <div class="sdate">115/11/1 – 116/3/31</div>
-        <div class="sprice">$35,000</div>
-      </div>
-      <div class="stage-chip">
-        <div class="sname">第三階段　衝刺期</div>
-        <div class="sdate">116/4/1 – 116/8/31</div>
-        <div class="sprice">$35,000</div>
-      </div>
-    </div>
+  <div class="grade-bar">
+    <span class="grade-bar-lbl">學年選擇：</span>
+    <div class="grade-pill active" onclick="switchGrade('g1','flyer')" id="gp-flyer-g1">118 高一上</div>
+    <div class="grade-pill" onclick="switchGrade('g2','flyer')" id="gp-flyer-g2">117 高二上</div>
+    <div class="grade-pill" onclick="switchGrade('g12','flyer')" id="gp-flyer-g12">117 一升二（暑期）</div>
   </div>
-
-  <div class="section-title">💰 合報優惠（越多科越划算）</div>
-  <div class="combo-banner">
-    <div class="combo-banner-title">報越多科，省越多！</div>
-    <div class="combo-grid">
-      <div class="combo-item"><div class="combo-label">合報 2 科</div><div class="combo-save">省 $1,000</div><div class="combo-note">&nbsp;</div></div>
-      <div class="combo-item"><div class="combo-label">合報 3 科</div><div class="combo-save">省 $2,000</div><div class="combo-note">&nbsp;</div></div>
-      <div class="combo-item"><div class="combo-label">合報 4 科</div><div class="combo-save">省 $4,000</div><div class="combo-note">&nbsp;</div></div>
-      <div class="combo-item"><div class="combo-label">合報 5 科</div><div class="combo-save">省 $5,000</div><div class="combo-note">不含八週班</div></div>
-    </div>
-  </div>
-
-  <div class="example-box">
-    <div class="example-title">📋 試算範例：報數學＋英文＋國文（3科）</div>
-    <div class="example-row"><span>建州數學</span><span>$22,800</span></div>
-    <div class="example-row"><span>Gary 英文</span><span>$18,800</span></div>
-    <div class="example-row"><span>韻慈 國文</span><span>$18,800</span></div>
-    <div class="example-row etotal">
-      <span>合報後實付</span>
-      <span>$58,400 <span class="save-tag">省 $2,000</span></span>
-    </div>
-  </div>
-
-  <div class="section-title">📚 各科課程一覽</div>
-  <div class="subject-grid">
-
-    <!-- 數學 -->
-    <div class="subject-card s-math">
-      <div class="subject-header"><span class="subject-icon">📐</span><span class="subject-label">數學</span></div>
-      <div class="course-row">
-        <div><div class="course-name">建州數學（日午）</div><div class="course-meta">115/7/5 – 116/1/10</div></div>
-        <div class="course-price">$22,800</div>
-      </div>
-      <div class="course-row">
-        <div><div class="course-name">大小解數學（三晚）</div><div class="course-meta">115/7/8 – 116/1/10</div></div>
-        <div class="course-price">$22,800</div>
-      </div>
-      <div class="course-row">
-        <div><div class="course-name">私中數學（日早）</div><div class="course-meta">115/7/10 – 116/1/10</div></div>
-        <div class="price-stack">
-          <div class="course-price xout">$24,800</div>
-          <div class="price-final">$22,800 <span style="font-size:10px;color:#888">合報價</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 英文 -->
-    <div class="subject-card s-eng">
-      <div class="subject-header"><span class="subject-icon">📖</span><span class="subject-label">英文</span></div>
-      <div class="course-row">
-        <div><div class="course-name">Gary 英文（四晚）</div><div class="course-meta">115/7/16 – 116/1/10</div></div>
-        <div class="course-price" style="color:var(--eng)">$18,800</div>
-      </div>
-      <div class="course-row">
-        <div><div class="course-name">Penny 英文（二晚）</div><div class="course-meta">115/7/14 – 116/1/10</div></div>
-        <div class="course-price" style="color:var(--eng)">$18,800</div>
-      </div>
-    </div>
-
-    <!-- 自然科 -->
-    <div class="subject-card s-sci">
-      <div class="subject-header"><span class="subject-icon">🔬</span><span class="subject-label">物理・化學</span></div>
-      <div class="course-row">
-        <div><div class="course-name">陸怡中 物理（六早）</div><div class="course-meta">115/7/18 – 116/1/10</div></div>
-        <div class="course-price" style="color:var(--sci-p)">$18,800</div>
-      </div>
-      <div class="course-row">
-        <div><div class="course-name">金刀 化學（六晚）</div><div class="course-meta">115/7/18 – 116/1/10</div></div>
-        <div class="course-price" style="color:var(--sci-c)">$18,800</div>
-      </div>
-    </div>
-
-    <!-- 國文 + 作文 -->
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div class="subject-card s-chi">
-        <div class="subject-header"><span class="subject-icon">✍️</span><span class="subject-label">國文</span></div>
-        <div class="course-row">
-          <div><div class="course-name">韻慈 國文（日早）</div><div class="course-meta">115/8/2 – 116/1/10</div></div>
-          <div class="course-price" style="color:var(--chi)">$18,800</div>
-        </div>
-      </div>
-      <div class="subject-card s-comp">
-        <div class="subject-header"><span class="subject-icon">📝</span><span class="subject-label">作文加強</span></div>
-        <div class="course-row">
-          <div><div class="course-name">怡樺 作文 8週班（四下午）</div><div class="course-meta">115/7/2 – 115/8/20 ｜ 不含合報計算</div></div>
-          <div class="course-price" style="color:var(--essay)">$8,800</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div style="text-align:center;margin-bottom:12px;">
-    <button onclick="switchTab('config')" style="background:var(--navy);color:white;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">
-      🧮 開始選課配置 →
-    </button>
-  </div>
-
-  <div class="flyer-footer">得勝者文教 · 以上課程均為「新報」方案 · 詳洽現場招生老師</div>
-
+  <div class="flyer-scroll" id="flyer-content"></div>
 </div>
 
-<!-- ══════════════════════════════
-     PANEL 2: 配置器
-══════════════════════════════ -->
+<!-- ══ CONFIG PANEL ══ -->
 <div class="tab-panel" id="panel-config">
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h2>選擇課程</h2>
-      <p>點選想報的課，右側自動計算</p>
-    </div>
-    <div class="group" id="g-math">
-      <div class="group-header" onclick="toggleGroup('g-math')">
-        <span class="dot" style="background:var(--math)"></span><span>數學</span><span class="chev">▼</span>
-      </div>
-      <div class="group-body" id="gb-math"></div>
-    </div>
-    <div class="group" id="g-eng">
-      <div class="group-header" onclick="toggleGroup('g-eng')">
-        <span class="dot" style="background:var(--eng)"></span><span>英文</span><span class="chev">▼</span>
-      </div>
-      <div class="group-body" id="gb-eng"></div>
-    </div>
-    <div class="group" id="g-sci">
-      <div class="group-header" onclick="toggleGroup('g-sci')">
-        <span class="dot" style="background:var(--sci-p)"></span><span>自然科</span><span class="chev">▼</span>
-      </div>
-      <div class="group-body" id="gb-sci"></div>
-    </div>
-    <div class="group" id="g-chi">
-      <div class="group-header" onclick="toggleGroup('g-chi')">
-        <span class="dot" style="background:var(--chi)"></span><span>國文</span><span class="chev">▼</span>
-      </div>
-      <div class="group-body" id="gb-chi"></div>
-    </div>
-    <div class="group" id="g-essay">
-      <div class="group-header" onclick="toggleGroup('g-essay')">
-        <span class="dot" style="background:var(--essay)"></span><span>作文加強班</span><span class="chev">▼</span>
-      </div>
-      <div class="group-body" id="gb-essay"></div>
-    </div>
-    <button class="clear-btn" onclick="clearAll()">✕ 清除所有選擇</button>
+  <div class="grade-bar">
+    <span class="grade-bar-lbl">學年選擇：</span>
+    <div class="grade-pill active" onclick="switchGrade('g1','config')" id="gp-config-g1">118 高一上</div>
+    <div class="grade-pill" onclick="switchGrade('g2','config')" id="gp-config-g2">117 高二上</div>
+    <div class="grade-pill" onclick="switchGrade('g12','config')" id="gp-config-g12">117 一升二（暑期）</div>
   </div>
-
-  <!-- Main area -->
-  <div class="cfg-main">
-    <div class="summary-bar">
-      <div class="summary-left">
-        <div class="slabel">合報後應繳金額</div>
-        <div class="sval" id="total-price">$0</div>
-      </div>
-      <div class="summary-right">
-        <div class="sum-chip"><div class="sc-label">已選課程</div><div class="sc-val" id="count-courses">0 堂</div></div>
-        <div class="sum-chip"><div class="sc-label">定價合計</div><div class="sc-val" id="list-price">$0</div></div>
-        <div class="sum-chip green"><div class="sc-label">合報折扣</div><div class="sc-val" id="discount-amt">−$0</div></div>
-      </div>
+  <div class="config-layout">
+    <div class="sidebar">
+      <div class="sidebar-hdr"><h2>選擇課程</h2><p>點選想報的課，右側自動計算</p></div>
+      <div id="cfg-groups"></div>
+      <button class="clear-btn" onclick="clearAll()">✕ 清除所有選擇</button>
     </div>
-
-    <div class="combo-notice" id="combo-notice"></div>
-
-    <div class="calendar-card">
-      <div class="calendar-title">📅 每週上課行程</div>
-      <div class="cal-grid" id="calendar"></div>
-    </div>
-
-    <div class="list-card">
-      <div class="list-title">📋 已選課程明細</div>
-      <div id="course-list"><div class="empty-state">← 從左側選擇課程，費用與行程會自動出現</div></div>
+    <div class="cfg-main">
+      <div class="summary-bar">
+        <div class="sum-left"><div class="slabel">合報後應繳金額</div><div class="sval" id="cfg-total">$0</div></div>
+        <div class="sum-right">
+          <div class="sum-chip"><div class="sc-l">已選課程</div><div class="sc-v" id="cfg-count">0 堂</div></div>
+          <div class="sum-chip"><div class="sc-l">定價合計</div><div class="sc-v" id="cfg-list">$0</div></div>
+          <div class="sum-chip green"><div class="sc-l">合報折扣</div><div class="sc-v" id="cfg-disc">−$0</div></div>
+        </div>
+      </div>
+      <div class="cfg-notice" id="cfg-notice"></div>
+      <div class="cal-card">
+        <div class="cal-title">📅 每週上課行程</div>
+        <div class="cal-grid" id="cfg-cal"></div>
+      </div>
+      <div class="list-card">
+        <div class="list-title">📋 已選課程明細</div>
+        <div id="cfg-list-body"><div class="empty-state">← 從左側選擇課程，費用與行程會自動出現</div></div>
+      </div>
     </div>
   </div>
-
 </div>
 
-<!-- ══════════════════════════════
-     PANEL 3: 試聽
-══════════════════════════════ -->
+<!-- ══ TRIAL PANEL ══ -->
 <div class="tab-panel" id="panel-trial">
-
-  <!-- Incentive bar -->
-  <div class="incentive-bar">
-    <div>
-      <h2>升高一免費試聽　限額開放</h2>
-      <div style="font-size:12px;color:#a0a8c8">來聽課，還有禮物拿！</div>
-    </div>
-    <div class="incentive-chips">
-      <div class="i-chip">
-        <div class="ic-icon">☕</div>
-        <div class="ic-text">每聽一堂</div>
-        <div class="ic-val">大杯星巴克</div>
+  <div class="trial-scroll">
+    <div class="incentive-bar">
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:3px">升高一免費試聽　限額開放</div>
+        <div style="font-size:11px;color:#a0a8c8">來聽課，還有禮物拿！</div>
       </div>
-      <div class="i-chip">
-        <div class="ic-icon">🎓</div>
-        <div class="ic-text">兩堂都聽</div>
-        <div class="ic-val">獎學金 $1,000</div>
+      <div class="inc-chips">
+        <div class="i-chip"><div class="ic-icon">☕</div><div class="ic-text">每聽一堂</div><div class="ic-val">大杯星巴克</div></div>
+        <div class="i-chip"><div class="ic-icon">🎓</div><div class="ic-text">兩堂都聽</div><div class="ic-val">獎學金 $1,000</div></div>
       </div>
     </div>
+    <div class="section-title">📋 試聽場次</div>
+    <div class="trial-grid">
+      <div class="trial-card">
+        <div class="tc-head" style="background:var(--math)"><span class="tc-icon">📐</span><div><div class="tc-subj">數學</div><div class="tc-teacher">解創智老師</div></div></div>
+        <div class="tc-body">
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--math)">第1堂</div><div><div class="tc-date">7/8（週三）</div><div class="tc-time">18:30 – 21:30</div></div></div>
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--math)">第2堂</div><div><div class="tc-date">7/15（週三）</div><div class="tc-time">18:30 – 21:30</div></div></div>
+        </div>
+      </div>
+      <div class="trial-card">
+        <div class="tc-head" style="background:#1a5c3a"><span class="tc-icon">📐</span><div><div class="tc-subj">數學</div><div class="tc-teacher">陳建州老師</div></div></div>
+        <div class="tc-body">
+          <div class="tc-sess"><div class="tc-badge" style="background:#1a5c3a">第1堂</div><div><div class="tc-date">7/5（週日）</div><div class="tc-time">14:00 – 17:00</div></div></div>
+          <div class="tc-sess"><div class="tc-badge" style="background:#1a5c3a">第2堂</div><div><div class="tc-date">7/12（週日）</div><div class="tc-time">14:00 – 17:00</div></div></div>
+        </div>
+      </div>
+      <div class="trial-card">
+        <div class="tc-head" style="background:var(--sci-p)"><span class="tc-icon">🔬</span><div><div class="tc-subj">物理・化學</div><div class="tc-teacher">千呼萬喚物化試聽</div></div></div>
+        <div class="tc-body">
+          <div class="tc-sess"><div class="tc-badge" style="background:#888">影片</div><div><div class="tc-date">6/21 場次</div><div class="tc-time">14:00 – 16:30</div><div class="tc-note">📹 可索取錄影檔</div></div></div>
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--sci-p)">實體</div><div><div class="tc-date">7/5（週日）</div><div class="tc-time">14:00 – 16:30</div></div></div>
+        </div>
+      </div>
+      <div class="trial-card">
+        <div class="tc-head" style="background:var(--eng)"><span class="tc-icon">📖</span><div><div class="tc-subj">英文</div><div class="tc-teacher">英文試聽（多場）</div></div></div>
+        <div class="tc-body">
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--eng)">場次A</div><div><div class="tc-date">7/16（週四）</div><div class="tc-time">18:30 – 21:30</div></div></div>
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--eng)">場次B</div><div><div class="tc-date">7/23（週四）</div><div class="tc-time">18:30 – 21:30</div></div></div>
+          <div class="tc-sess"><div class="tc-badge" style="background:var(--eng)">場次C</div><div><div class="tc-date">7/28（週二）</div><div class="tc-time">18:30 – 21:30</div></div></div>
+        </div>
+      </div>
+    </div>
+    <a href="https://pse.is/92yy5u" target="_blank" class="trial-cta">立即填寫試聽報名表 →</a>
+    <div class="trial-note">＊得勝者擁有活動最終解釋權</div>
   </div>
-
-  <!-- Trial cards -->
-  <div class="section-title">📋 試聽場次</div>
-  <div class="trial-grid">
-
-    <!-- 解創智 數學 -->
-    <div class="trial-card">
-      <div class="tc-header" style="background:var(--math)">
-        <span class="tc-icon">📐</span>
-        <div>
-          <div class="tc-subject">數學</div>
-          <div class="tc-teacher">解創智老師</div>
-        </div>
-      </div>
-      <div class="tc-body">
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--math)">第1堂</div>
-          <div class="tc-info">
-            <div class="tc-date">7/8（週三）</div>
-            <div class="tc-time">18:30 – 21:30</div>
-          </div>
-        </div>
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--math)">第2堂</div>
-          <div class="tc-info">
-            <div class="tc-date">7/15（週三）</div>
-            <div class="tc-time">18:30 – 21:30</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 建州 數學 -->
-    <div class="trial-card">
-      <div class="tc-header" style="background:#1a5c3a">
-        <span class="tc-icon">📐</span>
-        <div>
-          <div class="tc-subject">數學</div>
-          <div class="tc-teacher">陳建州老師</div>
-        </div>
-      </div>
-      <div class="tc-body">
-        <div class="tc-session">
-          <div class="tc-badge" style="background:#1a5c3a">第1堂</div>
-          <div class="tc-info">
-            <div class="tc-date">7/5（週日）</div>
-            <div class="tc-time">14:00 – 17:00</div>
-          </div>
-        </div>
-        <div class="tc-session">
-          <div class="tc-badge" style="background:#1a5c3a">第2堂</div>
-          <div class="tc-info">
-            <div class="tc-date">7/12（週日）</div>
-            <div class="tc-time">14:00 – 17:00</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 物理化學 -->
-    <div class="trial-card">
-      <div class="tc-header" style="background:var(--sci-p)">
-        <span class="tc-icon">🔬</span>
-        <div>
-          <div class="tc-subject">物理・化學</div>
-          <div class="tc-teacher">千呼萬喚物化試聽</div>
-        </div>
-      </div>
-      <div class="tc-body">
-        <div class="tc-session">
-          <div class="tc-badge" style="background:#888">影片</div>
-          <div class="tc-info">
-            <div class="tc-date">6/21 場次</div>
-            <div class="tc-time">14:00 – 16:30</div>
-            <div class="tc-note">📹 可索取錄影檔</div>
-          </div>
-        </div>
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--sci-p)">實體</div>
-          <div class="tc-info">
-            <div class="tc-date">7/5（週日）</div>
-            <div class="tc-time">14:00 – 16:30</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 英文 -->
-    <div class="trial-card">
-      <div class="tc-header" style="background:var(--eng)">
-        <span class="tc-icon">📖</span>
-        <div>
-          <div class="tc-subject">英文</div>
-          <div class="tc-teacher">英文試聽（多場）</div>
-        </div>
-      </div>
-      <div class="tc-body">
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--eng)">場次A</div>
-          <div class="tc-info">
-            <div class="tc-date">7/16（週四）</div>
-            <div class="tc-time">18:30 – 21:30</div>
-          </div>
-        </div>
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--eng)">場次B</div>
-          <div class="tc-info">
-            <div class="tc-date">7/23（週四）</div>
-            <div class="tc-time">18:30 – 21:30</div>
-          </div>
-        </div>
-        <div class="tc-session">
-          <div class="tc-badge" style="background:var(--eng)">場次C</div>
-          <div class="tc-info">
-            <div class="tc-date">7/28（週二）</div>
-            <div class="tc-time">18:30 – 21:30</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CTA -->
-  <a href="https://pse.is/92yy5u" target="_blank" class="trial-cta">
-    立即填寫試聽報名表 →
-  </a>
-  <div class="trial-note">＊得勝者擁有活動最終解釋權</div>
-
 </div>
 
 <script>
-// ─── Tab switching ───
-function switchTab(name) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-}
-
-// ─── Course data ───
-const COURSES = [
-  { id:'baofeng1', group:'math', color:'#1a1a2e', name:'數學巔峰班 第一階段', tag:'銜接期 6/13–10/31', day:-1, slot:'tbd', price:35000 },
-  { id:'baofeng2', group:'math', color:'#1a1a2e', name:'數學巔峰班 第二階段', tag:'鞏固期 11/1–3/31',  day:-1, slot:'tbd', price:35000 },
-  { id:'baofeng3', group:'math', color:'#1a1a2e', name:'數學巔峰班 第三階段', tag:'衝刺期 4/1–8/31',   day:-1, slot:'tbd', price:35000 },
-  { id:'jianz',   group:'math', color:'#2d6a4f', name:'建州數學',    tag:'日午（週日中午）',   day:0, slot:'午', price:22800 },
-  { id:'daxj',    group:'math', color:'#2d6a4f', name:'大小解數學',  tag:'三晚（週三晚上）',   day:3, slot:'晚', price:22800 },
-  { id:'pvmath',  group:'math', color:'#2d6a4f', name:'私中數學',    tag:'日早（週日早上）',   day:0, slot:'早', price:24800, comboPrice:22800 },
-  { id:'gary',    group:'eng',  color:'#1d3557', name:'Gary 英文',   tag:'四晚（週四晚上）',   day:4, slot:'晚', price:18800 },
-  { id:'penny',   group:'eng',  color:'#1d3557', name:'Penny 英文',  tag:'二晚（週二晚上）',   day:2, slot:'晚', price:18800 },
-  { id:'physics', group:'sci',  color:'#5c3d8f', name:'陸怡中 物理', tag:'六早（週六早上）',   day:6, slot:'早', price:18800 },
-  { id:'chem',    group:'sci',  color:'#7b2d8b', name:'金刀 化學',   tag:'六晚（週六晚上）',   day:6, slot:'晚', price:18800 },
-  { id:'chinese', group:'chi',  color:'#9b2335', name:'韻慈 國文',   tag:'日早（週日早上）',   day:0, slot:'早', price:18800 },
-  { id:'essay',   group:'essay',color:'#7b6020', name:'怡樺 作文 8週班', tag:'四下午（週四下午）・不含合報計算', day:4, slot:'午', price:8800, excludeCombo:true },
-];
-
-const GROUPS = {
-  math:  'gb-math', eng: 'gb-eng', sci: 'gb-sci', chi: 'gb-chi', essay: 'gb-essay'
+// ═══════ DATA ═══════
+const GRADE_DATA = {
+  g1: {
+    id:'g1', label:'118 學測高一上', returnDiscount:0,
+    courses:[
+      {id:'bf1', group:'math', color:'#1a1a2e', name:'數學巔峰班 一', tag:'銜接期 6/13–10/31 ｜ 暑假：三/六下午 → 開學後：六下午 ｜ 許昌（7月中後移至青島2F）', day:-1,slot:'tbd',price:35000},
+      {id:'bf2', group:'math', color:'#1a1a2e', name:'數學巔峰班 二', tag:'鞏固期 11/1–3/31 ｜ 週六下午 ｜ 青島2F', day:6,slot:'午',price:35000},
+      {id:'bf3', group:'math', color:'#1a1a2e', name:'數學巔峰班 三', tag:'衝刺期 4/1–8/31 ｜ 週六下午 ｜ 青島2F',  day:6,slot:'午',price:35000},
+      {id:'jz1', group:'math', color:'#2d6a4f', name:'建州數學',   tag:'日午（週日中午）｜ 壽德大樓6F', day:0,slot:'午',price:22800},
+      {id:'dx1', group:'math', color:'#2d6a4f', name:'大小解數學', tag:'三晚（週三晚上）｜ 壽德大樓6F', day:3,slot:'晚',price:22800},
+      {id:'pm1', group:'math', color:'#2d6a4f', name:'私中數學',   tag:'日早（週日早上）｜ 壽德大樓6F', day:0,slot:'早',price:24800,comboPrice:22800},
+      {id:'gy1', group:'eng',  color:'#1d3557', name:'Gary 英文',  tag:'四晚（週四晚上）｜ 壽德大樓6F', day:4,slot:'晚',price:18800},
+      {id:'py1', group:'eng',  color:'#1d3557', name:'Penny 英文', tag:'二晚（週二晚上）｜ 壽德大樓6F', day:2,slot:'晚',price:18800},
+      {id:'ph1', group:'sci',  color:'#5c3d8f', name:'陸怡中 物理',tag:'六早（週六早上）｜ 公園路10F（暑假）', day:6,slot:'早',price:18800},
+      {id:'ch1', group:'sci',  color:'#7b2d8b', name:'金刀 化學',  tag:'六晚（週六晚上）｜ 公園路10F（暑假）', day:6,slot:'晚',price:18800},
+      {id:'cn1', group:'chi',  color:'#9b2335', name:'韻慈 國文',  tag:'日早（週日早上）｜ 青島2F', day:0,slot:'早',price:18800},
+      {id:'es1', group:'essay',color:'#7b6020', name:'怡樺 作文 8週班',tag:'四下午・不含合報 ｜ 壽德大樓6F', day:4,slot:'午',price:8800,excludeCombo:true},
+    ],
+    groups:[
+      {id:'math',label:'數學',color:'#2d6a4f'},{id:'eng',label:'英文',color:'#1d3557'},
+      {id:'sci',label:'自然科',color:'#5c3d8f'},{id:'chi',label:'國文',color:'#9b2335'},
+      {id:'essay',label:'作文加強',color:'#7b6020'},
+    ],
+    combo:[
+      {min:2,save:1000,label:'2科合報'},{min:3,save:2000,label:'3科合報'},
+      {min:4,save:4000,label:'4科合報'},{min:5,save:5000,label:'5科合報（不含八週班）'},
+    ],
+  },
+  g2: {
+    id:'g2', label:'117 學測高二上', returnDiscount:2000,
+    courses:[
+      {id:'yc2', group:'chi', color:'#9b2335', name:'韻慈 國文', tag:'一晚（週一晚上）', day:1,slot:'晚',price:22800},
+      {id:'hy2', group:'chi', color:'#7a1c2c', name:'洪晏 國文', tag:'一晚（週一晚上）', day:1,slot:'晚',price:22800},
+      {id:'gy2', group:'eng', color:'#1d3557', name:'Gary 英文', tag:'五晚（週五晚上）', day:5,slot:'晚',price:22800},
+      {id:'py2', group:'eng', color:'#1d3557', name:'Penny 英文',tag:'日早（週日早上）', day:0,slot:'早',price:22800},
+      {id:'ch2', group:'sci', color:'#7b2d8b', name:'金刀 化學', tag:'二晚（週二晚上）', day:2,slot:'晚',price:22800},
+      {id:'ph2', group:'sci', color:'#5c3d8f', name:'陸懂 物理', tag:'三晚（週三晚上）', day:3,slot:'晚',price:22800},
+      {id:'dx2a',group:'math',color:'#2d6a4f', name:'大小解數學', tag:'四晚（週四晚上）',day:4,slot:'晚',price:24800},
+      {id:'dx2b',group:'math',color:'#2d6a4f', name:'大小解數學', tag:'六早（週六早上）',day:6,slot:'早',price:24800},
+      {id:'lm2', group:'math',color:'#2d6a4f', name:'菱牧 數學', tag:'三晚（週三晚上）', day:3,slot:'晚',price:24800},
+      {id:'jz2', group:'math',color:'#2d6a4f', name:'建州 數學', tag:'六晚（週六晚上）', day:6,slot:'晚',price:24800},
+      {id:'pm2', group:'math',color:'#2d6a4f', name:'私中 數學', tag:'日午（週日中午）', day:0,slot:'午',price:24800},
+    ],
+    groups:[
+      {id:'math',label:'數學',color:'#2d6a4f'},{id:'eng',label:'英文',color:'#1d3557'},
+      {id:'sci',label:'自然科',color:'#5c3d8f'},{id:'chi',label:'國文',color:'#9b2335'},
+    ],
+    combo:[
+      {min:2,save:2000,label:'2科合報'},{min:3,save:5000,label:'3科合報'},
+      {min:4,save:9000,label:'4科合報'},{min:5,save:15000,label:'5科合報'},
+    ],
+  },
+  g12: {
+    id:'g12', label:'117 學測一升二（暑期）', returnDiscount:0,
+    courses:[
+      {id:'mk-chi', group:'mock',color:'#9b2335',name:'模考班 國文',tag:'115/7/1 – 115/8/31',day:-1,slot:'tbd',price:8800},
+      {id:'mk-eng', group:'mock',color:'#1d3557',name:'模考班 英文',tag:'115/7/1 – 115/8/31',day:-1,slot:'tbd',price:8800},
+      {id:'mk-math',group:'mock',color:'#2d6a4f',name:'模考班 數學',tag:'115/7/1 – 115/8/31',day:-1,slot:'tbd',price:8800},
+      {id:'mk-soc', group:'mock',color:'#5c5c00',name:'模考班 社會',tag:'115/7/1 – 115/8/31',day:-1,slot:'tbd',price:8800},
+      {id:'mk-sci', group:'mock',color:'#5c3d8f',name:'模考班 自然',tag:'115/7/1 – 115/8/31',day:-1,slot:'tbd',price:8800},
+      {id:'dk',     group:'dukao',color:'#1a1a2e',name:'讀考班',tag:'115/7/1 – 115/8/31・不含合報',day:-1,slot:'tbd',price:28000,excludeCombo:true},
+    ],
+    groups:[
+      {id:'mock',label:'模考班（各科 $8,800）',color:'#2d6a4f'},
+      {id:'dukao',label:'讀考班',color:'#1a1a2e'},
+    ],
+    combo:[
+      {min:2,save:200,label:'2科合報'},{min:3,save:400,label:'3科合報'},
+      {min:4,save:600,label:'4科合報'},{min:5,save:800,label:'5科合報'},
+    ],
+  },
 };
-const COMBO = [
-  { min:2, save:1000, label:'2科合報' },
-  { min:3, save:2000, label:'3科合報' },
-  { min:4, save:4000, label:'4科合報' },
-  { min:5, save:5000, label:'5科合報' },
-];
-const DAYS  = ['日','一','二','三','四','五','六'];
-const SLOTS = ['早','午','晚'];
 
-let selected = new Set();
+const DAYS=['日','一','二','三','四','五','六'];
+const SLOTS=['早','午','晚'];
+let activeGradeFlyer='g1', activeGradeConfig='g1';
+let selected=new Set();
 
-function buildSidebar() {
-  COURSES.forEach(c => {
-    const container = document.getElementById(GROUPS[c.group]);
-    const div = document.createElement('div');
-    div.className = 'course-chip';
-    div.dataset.id = c.id;
-    div.onclick = () => toggle(c.id);
-    div.innerHTML = `
-      <div class="chip-check" id="chk-${c.id}">✓</div>
-      <div class="chip-info">
-        <div class="chip-cname">${c.name}</div>
-        <div class="chip-cmeta">${c.tag}</div>
-      </div>
-      <div class="chip-cprice">$${c.price.toLocaleString()}</div>`;
-    div.style.setProperty('--accent', c.color);
-    container.appendChild(div);
-  });
+// ═══════ TAB SWITCH ═══════
+function switchTab(name){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
 
-function toggle(id) {
-  selected.has(id) ? selected.delete(id) : selected.add(id);
-  render();
-}
-function clearAll() { selected.clear(); render(); }
-function toggleGroup(gid) { document.getElementById(gid).classList.toggle('collapsed'); }
-
-function render() {
-  const sel = COURSES.filter(c => selected.has(c.id));
-
-  COURSES.forEach(c => {
-    const chip = document.querySelector(`.course-chip[data-id="${c.id}"]`);
-    chip.classList.toggle('selected', selected.has(c.id));
-  });
-
-  const comboSel = sel.filter(c => !c.excludeCombo);
-  const n = comboSel.length;
-  let listTotal = 0;
-  sel.forEach(c => { listTotal += (n >= 2 && c.comboPrice) ? c.comboPrice : c.price; });
-
-  const comboRule = [...COMBO].reverse().find(r => n >= r.min);
-  const discount  = comboRule ? comboRule.save : 0;
-  const finalTotal = listTotal - discount;
-
-  document.getElementById('total-price').textContent    = `$${finalTotal.toLocaleString()}`;
-  document.getElementById('list-price').textContent     = `$${listTotal.toLocaleString()}`;
-  document.getElementById('count-courses').textContent  = `${sel.length} 堂`;
-  document.getElementById('discount-amt').textContent   = `−$${discount.toLocaleString()}`;
-
-  const notice = document.getElementById('combo-notice');
-  if (comboRule) {
-    notice.className = 'combo-notice show';
-    notice.style.cssText = '';
-    notice.textContent = `🎉 ${comboRule.label}優惠：折抵 $${comboRule.save.toLocaleString()}！`;
-  } else if (n === 1) {
-    notice.className = 'combo-notice show';
-    notice.style.background = '#f0f4ff';
-    notice.style.borderColor = '#99aaf0';
-    notice.style.color = '#334';
-    notice.textContent = `💡 再加報 1 科即享合報優惠（省 $1,000 起）`;
+// ═══════ GRADE SWITCH ═══════
+function switchGrade(gid,panel){
+  if(panel==='flyer'){
+    activeGradeFlyer=gid;
+    ['g1','g2','g12'].forEach(g=>document.getElementById('gp-flyer-'+g).classList.toggle('active',g===gid));
+    renderFlyer(gid);
   } else {
-    notice.className = 'combo-notice';
+    activeGradeConfig=gid;
+    ['g1','g2','g12'].forEach(g=>document.getElementById('gp-config-'+g).classList.toggle('active',g===gid));
+    selected.clear();
+    buildConfigSidebar(gid);
+    renderConfig();
   }
+}
+
+// ═══════ FLYER ═══════
+function comboHTML(combo,lastNote=''){
+  return `<div class="combo-banner">
+    <div class="combo-title">💰 合報優惠（越多科越划算）</div>
+    <div class="combo-grid">
+      ${combo.map((c,i)=>`<div class="combo-item"><div class="combo-lbl">${c.label}</div><div class="combo-save">省 $${c.save.toLocaleString()}</div><div class="combo-note">${i===combo.length-1&&lastNote?lastNote:'&nbsp;'}</div></div>`).join('')}
+    </div></div>`;
+}
+
+function renderFlyer(gid){
+  const g=GRADE_DATA[gid];
+  const el=document.getElementById('flyer-content');
+  if(gid==='g1') el.innerHTML=flyerG1(g);
+  else if(gid==='g2') el.innerHTML=flyerG2(g);
+  else el.innerHTML=flyerG12(g);
+}
+
+function flyerG1(g){return `
+  <div class="section-title">🏆 數學旗艦班（頂尖升學路線）</div>
+  <div class="premium-card">
+    <div class="prem-name">數學巔峰班　三階段完整制霸</div>
+    <div class="prem-desc">銜接→基礎→衝刺，從暑假一路備戰到學測前</div>
+    <div class="prem-stages">
+      <div class="prem-stage"><div class="ps-name">第一階段　銜接期</div><div class="ps-date">115/6/13 – 115/10/31</div><div class="ps-date" style="color:#e8c97a">暑假：三/六下午 → 開學後：六下午</div><div class="ps-date" style="color:#e8c97a">許昌 → 7月中後移至青島2F</div><div class="ps-price">$35,000</div></div>
+      <div class="prem-stage"><div class="ps-name">第二階段　鞏固期</div><div class="ps-date">115/11/1 – 116/3/31</div><div class="ps-date" style="color:#e8c97a">週六下午 ｜ 青島2F</div><div class="ps-price">$35,000</div></div>
+      <div class="prem-stage"><div class="ps-name">第三階段　衝刺期</div><div class="ps-date">116/4/1 – 116/8/31</div><div class="ps-date" style="color:#e8c97a">週六下午 ｜ 青島2F</div><div class="ps-price">$35,000</div></div>
+    </div>
+  </div>
+  ${comboHTML(g.combo,'不含八週班')}
+  <div class="example-box">
+    <div class="example-title">📋 試算範例：數學＋英文＋國文（3科）</div>
+    <div class="example-row"><span>建州數學</span><span>$22,800</span></div>
+    <div class="example-row"><span>Gary 英文</span><span>$18,800</span></div>
+    <div class="example-row"><span>韻慈 國文</span><span>$18,800</span></div>
+    <div class="example-total"><span>合報後實付</span><span>$58,400 <span class="save-tag">省 $2,000</span></span></div>
+  </div>
+  <div class="section-title">📚 各科課程</div>
+  <div class="subject-grid">
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--math)"><span class="subject-icon">📐</span><span class="subject-label">數學</span></div>
+      <div class="course-row"><div><div class="c-name">建州數學（日午）</div><div class="c-meta">115/7/5 – 116/1/10 ｜ 壽德大樓6F</div></div><div class="c-price" style="color:var(--math)">$22,800</div></div>
+      <div class="course-row"><div><div class="c-name">大小解數學（三晚）</div><div class="c-meta">115/7/8 – 116/1/10 ｜ 壽德大樓6F</div></div><div class="c-price" style="color:var(--math)">$22,800</div></div>
+      <div class="course-row"><div><div class="c-name">私中數學（日早）</div><div class="c-meta">115/7/10 – 116/1/10 ｜ 壽德大樓6F</div></div><div class="c-price-stack"><div class="c-striked">$24,800</div><div class="c-price" style="color:var(--math)">$22,800 <span style="font-size:9px;color:#888">合報</span></div></div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--eng)"><span class="subject-icon">📖</span><span class="subject-label">英文</span></div>
+      <div class="course-row"><div><div class="c-name">Gary 英文（四晚）</div><div class="c-meta">115/7/16 – 116/1/10 ｜ 壽德大樓6F</div></div><div class="c-price" style="color:var(--eng)">$18,800</div></div>
+      <div class="course-row"><div><div class="c-name">Penny 英文（二晚）</div><div class="c-meta">115/7/14 – 116/1/10 ｜ 壽德大樓6F</div></div><div class="c-price" style="color:var(--eng)">$18,800</div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--sci-p)"><span class="subject-icon">🔬</span><span class="subject-label">物理・化學</span></div>
+      <div class="course-row"><div><div class="c-name">陸怡中 物理（六早）</div><div class="c-meta">115/7/18 – 116/1/10 ｜ 公園路10F（暑假）</div></div><div class="c-price" style="color:var(--sci-p)">$18,800</div></div>
+      <div class="course-row"><div><div class="c-name">金刀 化學（六晚）</div><div class="c-meta">115/7/18 – 116/1/10 ｜ 公園路10F（暑假）</div></div><div class="c-price" style="color:var(--sci-c)">$18,800</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div class="subject-card">
+        <div class="subject-head" style="background:var(--chi)"><span class="subject-icon">✍️</span><span class="subject-label">國文</span></div>
+        <div class="course-row"><div><div class="c-name">韻慈 國文（日早）</div><div class="c-meta">115/8/2 – 116/1/10 ｜ 青島2F</div></div><div class="c-price" style="color:var(--chi)">$18,800</div></div>
+      </div>
+      <div class="subject-card">
+        <div class="subject-head" style="background:var(--essay)"><span class="subject-icon">📝</span><span class="subject-label">作文加強</span></div>
+        <div class="course-row"><div><div class="c-name">怡樺 作文 8週班（四下午）</div><div class="c-meta">115/7/2 – 115/8/20 ｜ 不含合報 ｜ 壽德大樓6F</div></div><div class="c-price" style="color:var(--essay)">$8,800</div></div>
+      </div>
+    </div>
+  </div>
+  <button class="cta-btn" onclick="switchTab('config');switchGrade('g1','config')">🧮 開始選課配置 →</button>
+  <div class="flyer-footer">得勝者文教 · 以上課程均為「新報」方案 · 詳洽現場招生老師</div>`;}
+
+function flyerG2(g){return `
+  <div class="return-notice">📌 舊生優惠：每科學費減 $2,000（在定價基礎上直接折扣）</div>
+  ${comboHTML(g.combo,'')}
+  <div class="example-box">
+    <div class="example-title">📋 試算範例：數學＋英文＋自然（3科，新生）</div>
+    <div class="example-row"><span>大小解數學</span><span>$24,800</span></div>
+    <div class="example-row"><span>Gary 英文</span><span>$22,800</span></div>
+    <div class="example-row"><span>金刀 化學</span><span>$22,800</span></div>
+    <div class="example-total"><span>合報後實付</span><span>$65,400 <span class="save-tag">省 $5,000</span></span></div>
+  </div>
+  <div class="section-title">📚 各科課程（新生定價）</div>
+  <div class="subject-grid">
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--math)"><span class="subject-icon">📐</span><span class="subject-label">數學 $24,800</span></div>
+      <div class="course-row"><div><div class="c-name">大小解數學（四晚）</div><div class="c-meta">115/7/16 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+      <div class="course-row"><div><div class="c-name">大小解數學（六早）</div><div class="c-meta">115/7/18 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+      <div class="course-row"><div><div class="c-name">菱牧 數學（三晚）</div><div class="c-meta">115/7/15 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+      <div class="course-row"><div><div class="c-name">建州 數學（六晚）</div><div class="c-meta">115/7/18 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+      <div class="course-row"><div><div class="c-name">私中 數學（日午）</div><div class="c-meta">115/7/19 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--eng)"><span class="subject-icon">📖</span><span class="subject-label">英文 $22,800</span></div>
+      <div class="course-row"><div><div class="c-name">Gary 英文（五晚）</div><div class="c-meta">115/7/17 – 116/1/10</div></div><div class="c-price" style="color:var(--eng)">$22,800</div></div>
+      <div class="course-row"><div><div class="c-name">Penny 英文（日早）</div><div class="c-meta">115/7/19 – 116/1/10</div></div><div class="c-price" style="color:var(--eng)">$22,800</div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--sci-p)"><span class="subject-icon">🔬</span><span class="subject-label">自然科 $22,800</span></div>
+      <div class="course-row"><div><div class="c-name">陸懂 物理（三晚）</div><div class="c-meta">115/7/15 – 116/1/10</div></div><div class="c-price" style="color:var(--sci-p)">$22,800</div></div>
+      <div class="course-row"><div><div class="c-name">金刀 化學（二晚）</div><div class="c-meta">115/7/14 – 116/1/10</div></div><div class="c-price" style="color:var(--sci-c)">$22,800</div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:var(--chi)"><span class="subject-icon">✍️</span><span class="subject-label">國文 $22,800</span></div>
+      <div class="course-row"><div><div class="c-name">韻慈 國文（一晚）</div><div class="c-meta">115/7/13 – 116/1/10</div></div><div class="c-price" style="color:var(--chi)">$22,800</div></div>
+      <div class="course-row"><div><div class="c-name">洪晏 國文（一晚）</div><div class="c-meta">115/7/13 – 116/1/10</div></div><div class="c-price" style="color:var(--chi)">$22,800</div></div>
+    </div>
+  </div>
+  <button class="cta-btn" onclick="switchTab('config');switchGrade('g2','config')">🧮 開始選課配置 →</button>
+  <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師</div>`;}
+
+function flyerG12(g){return `
+  <div style="background:white;border-radius:13px;padding:14px 18px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.06);font-size:11px;color:#444;line-height:1.9">
+    一升二暑期課程分為兩種：<br>
+    <strong>🅐 模考班</strong>（各科 $8,800）：國、英、數、社、自五科可自由組合，合報享折扣。<br>
+    <strong>🅑 讀考班</strong>（$28,000）：獨立課程，不含入合報計算。
+  </div>
+  ${comboHTML(g.combo,'')}
+  <div style="font-size:10px;color:#888;margin:-7px 0 12px;text-align:right">＊合報優惠適用模考班各科</div>
+  <div class="example-box">
+    <div class="example-title">📋 試算範例：模考班 3科（國＋英＋數）</div>
+    <div class="example-row"><span>模考班 國文</span><span>$8,800</span></div>
+    <div class="example-row"><span>模考班 英文</span><span>$8,800</span></div>
+    <div class="example-row"><span>模考班 數學</span><span>$8,800</span></div>
+    <div class="example-total"><span>合報後實付</span><span>$26,000 <span class="save-tag">省 $400</span></span></div>
+  </div>
+  <div class="section-title">📚 課程明細</div>
+  <div class="subject-grid">
+    <div class="subject-card">
+      <div class="subject-head" style="background:#2d6a4f"><span class="subject-icon">📋</span><span class="subject-label">模考班（各科 $8,800）</span></div>
+      ${['國文','英文','數學','社會','自然'].map(s=>`<div class="course-row"><div><div class="c-name">模考班 ${s}</div><div class="c-meta">115/7/1 – 115/8/31</div></div><div class="c-price" style="color:#2d6a4f">$8,800</div></div>`).join('')}
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:#1a1a2e"><span class="subject-icon">📚</span><span class="subject-label">讀考班</span></div>
+      <div class="course-row"><div><div class="c-name">讀考班</div><div class="c-meta">115/7/1 – 115/8/31 ｜ 不含合報計算</div></div><div class="c-price" style="color:#1a1a2e">$28,000</div></div>
+    </div>
+  </div>
+  <button class="cta-btn" onclick="switchTab('config');switchGrade('g12','config')">🧮 開始選課配置 →</button>
+  <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師</div>`;}
+
+// ═══════ CONFIG SIDEBAR ═══════
+function buildConfigSidebar(gid){
+  const g=GRADE_DATA[gid];
+  const container=document.getElementById('cfg-groups');
+  container.innerHTML='';
+  g.groups.forEach(grp=>{
+    const courses=g.courses.filter(c=>c.group===grp.id);
+    if(!courses.length) return;
+    const gDiv=document.createElement('div'); gDiv.className='grp'; gDiv.id='grp-'+grp.id;
+    gDiv.innerHTML=`
+      <div class="grp-hdr" onclick="document.getElementById('grp-${grp.id}').classList.toggle('collapsed')">
+        <span class="grp-dot" style="background:${grp.color}"></span>
+        <span>${grp.label}</span><span class="grp-chev">▼</span>
+      </div>
+      <div class="grp-body" id="grpb-${grp.id}"></div>`;
+    container.appendChild(gDiv);
+    const body=document.getElementById('grpb-'+grp.id);
+    courses.forEach(c=>{
+      const chip=document.createElement('div'); chip.className='c-chip'; chip.dataset.id=c.id;
+      chip.style.setProperty('--chip-color',c.color);
+      chip.onclick=()=>{selected.has(c.id)?selected.delete(c.id):selected.add(c.id); renderConfig();};
+      chip.innerHTML=`
+        <div class="c-chk" id="chk-${c.id}">✓</div>
+        <div class="c-chip-info"><div class="c-chip-name">${c.name}</div><div class="c-chip-meta">${c.tag}</div></div>
+        <div class="c-chip-price">$${c.price.toLocaleString()}</div>`;
+      body.appendChild(chip);
+    });
+  });
+}
+
+function clearAll(){selected.clear(); renderConfig();}
+
+// ═══════ CONFIG RENDER ═══════
+function renderConfig(){
+  const g=GRADE_DATA[activeGradeConfig];
+  const sel=g.courses.filter(c=>selected.has(c.id));
+  g.courses.forEach(c=>{const ch=document.querySelector(`.c-chip[data-id="${c.id}"]`); if(ch) ch.classList.toggle('selected',selected.has(c.id));});
+
+  const comboSel=sel.filter(c=>!c.excludeCombo);
+  const n=comboSel.length;
+  let listTotal=0;
+  sel.forEach(c=>{listTotal+=(n>=2&&c.comboPrice)?c.comboPrice:c.price;});
+  const comboRule=[...g.combo].reverse().find(r=>n>=r.min);
+  const discount=comboRule?comboRule.save:0;
+  const final=listTotal-discount;
+
+  document.getElementById('cfg-total').textContent=`$${final.toLocaleString()}`;
+  document.getElementById('cfg-list').textContent=`$${listTotal.toLocaleString()}`;
+  document.getElementById('cfg-count').textContent=`${sel.length} 堂`;
+  document.getElementById('cfg-disc').textContent=`−$${discount.toLocaleString()}`;
+
+  const notice=document.getElementById('cfg-notice');
+  if(comboRule){
+    notice.className='cfg-notice show'; notice.style.cssText='';
+    notice.textContent=`🎉 ${comboRule.label}優惠：折抵 $${comboRule.save.toLocaleString()}！`;
+  } else if(n===1){
+    notice.className='cfg-notice show';
+    notice.style.background='#f0f4ff'; notice.style.borderColor='#99aaf0'; notice.style.color='#334';
+    notice.textContent=`💡 再加報 1 科即享合報優惠（省 $${g.combo[0].save.toLocaleString()} 起）`;
+  } else { notice.className='cfg-notice'; }
 
   renderCalendar(sel);
-  renderList(sel, comboRule, n);
+  renderList(sel,comboRule,n,g);
 }
 
-function renderCalendar(sel) {
-  const cal = document.getElementById('calendar');
-  cal.innerHTML = '';
-  const empty = document.createElement('div'); empty.className = 'cal-head'; cal.appendChild(empty);
-  DAYS.forEach(d => { const h = document.createElement('div'); h.className='cal-head'; h.textContent=`週${d}`; cal.appendChild(h); });
-
-  SLOTS.forEach(slot => {
-    const tl = document.createElement('div'); tl.className='cal-tlabel'; tl.textContent=slot; cal.appendChild(tl);
-    for (let d = 0; d < 7; d++) {
-      const cell = document.createElement('div'); cell.className='cal-cell';
-      sel.filter(c => c.day===d && c.slot===slot).forEach(c => {
-        const ev = document.createElement('div'); ev.className='cal-event';
-        ev.style.background = c.color; ev.textContent = shortName(c.name); cell.appendChild(ev);
+function renderCalendar(sel){
+  const cal=document.getElementById('cfg-cal'); cal.innerHTML='';
+  const e=document.createElement('div'); e.className='cal-head'; cal.appendChild(e);
+  DAYS.forEach(d=>{const h=document.createElement('div'); h.className='cal-head'; h.textContent=`週${d}`; cal.appendChild(h);});
+  SLOTS.forEach(slot=>{
+    const tl=document.createElement('div'); tl.className='cal-tlabel'; tl.textContent=slot; cal.appendChild(tl);
+    for(let d=0;d<7;d++){
+      const cell=document.createElement('div'); cell.className='cal-cell';
+      sel.filter(c=>c.day===d&&c.slot===slot).forEach(c=>{
+        const ev=document.createElement('div'); ev.className='cal-event';
+        ev.style.background=c.color; ev.textContent=sName(c.name); cell.appendChild(ev);
       });
       cal.appendChild(cell);
     }
   });
-
-  const tbd = sel.filter(c => c.day === -1);
-  if (tbd.length) {
-    const tl = document.createElement('div'); tl.className='cal-tlabel'; tl.textContent='TBD'; tl.style.background='#f7f7f7'; cal.appendChild(tl);
-    const span = document.createElement('div');
-    span.style.cssText = 'grid-column:span 7;border-bottom:1px solid var(--border);padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;';
-    tbd.forEach(c => {
-      const ev = document.createElement('div'); ev.className='cal-event';
-      ev.style.background=c.color; ev.style.opacity='.8'; ev.textContent=shortName(c.name)+'（洽詢時段）'; span.appendChild(ev);
-    });
-    cal.appendChild(span);
+  const tbd=sel.filter(c=>c.day===-1);
+  if(tbd.length){
+    const tl=document.createElement('div'); tl.className='cal-tlabel'; tl.textContent='TBD'; tl.style.background='#f7f7f7'; cal.appendChild(tl);
+    const sp=document.createElement('div');
+    sp.style.cssText='grid-column:span 7;border-bottom:1px solid var(--border);padding:4px 7px;display:flex;flex-wrap:wrap;gap:3px;align-items:center;';
+    tbd.forEach(c=>{const ev=document.createElement('div'); ev.className='cal-event'; ev.style.background=c.color; ev.style.opacity='.8'; ev.textContent=sName(c.name)+'（洽詢）'; sp.appendChild(ev);});
+    cal.appendChild(sp);
   }
 }
 
-function shortName(n) {
-  return n.replace('數學巔峰班 ','巔峰').replace(' 第','＃')
-          .replace('陸怡中 ','').replace('金刀 ','').replace('韻慈 ','').replace('怡樺 ','')
-          .replace(' 8週班','').replace('數學','數').replace('英文','英')
-          .replace('物理','物').replace('化學','化').replace('國文','國');
+function sName(n){
+  return n.replace(/數學巔峰班 /,'巔峰').replace(/ [一二三]/,'')
+          .replace(/陸怡中 |陸懂 |金刀 |韻慈 |洪晏 |怡樺 |菱牧 |建州 |私中 |大小解/g,m=>m==='大小解'?'大小解':'')
+          .replace(/ 8週班/,'').replace(/模考班 /,'').replace(/讀考班/,'讀考')
+          .replace(/數學$/,'數').replace(/英文$/,'英').replace(/物理$/,'物')
+          .replace(/化學$/,'化').replace(/國文$/,'國').replace(/社會$/,'社').replace(/自然$/,'自');
 }
 
-function renderList(sel, comboRule, n) {
-  const c = document.getElementById('course-list');
-  if (!sel.length) { c.innerHTML='<div class="empty-state">← 從左側選擇課程，費用與行程會自動出現</div>'; return; }
-  c.innerHTML = '';
-  sel.forEach(course => {
-    const use = n >= 2 && course.comboPrice;
-    const p   = use ? course.comboPrice : course.price;
-    const row = document.createElement('div'); row.className='list-row';
-    row.innerHTML = `
-      <div><div class="lr-name" style="color:${course.color}">${course.name}</div><div class="lr-meta">${course.tag}</div></div>
-      <div style="color:${course.color};font-size:14px;font-weight:700">
-        <div class="price-line">
-          ${use ? `<span class="striked">$${course.price.toLocaleString()}</span>` : ''}
-          $${p.toLocaleString()}
-        </div>
-      </div>`;
+function renderList(sel,comboRule,n,g){
+  const c=document.getElementById('cfg-list-body');
+  if(!sel.length){c.innerHTML='<div class="empty-state">← 從左側選擇課程，費用與行程會自動出現</div>'; return;}
+  c.innerHTML='';
+  sel.forEach(course=>{
+    const use=n>=2&&course.comboPrice;
+    const p=use?course.comboPrice:course.price;
+    const row=document.createElement('div'); row.className='list-row';
+    row.innerHTML=`<div><div class="lr-name" style="color:${course.color}">${course.name}</div><div class="lr-meta">${course.tag}</div></div>
+      <div style="color:${course.color};font-size:13px;font-weight:700"><div class="price-line">${use?`<span class="striked">$${course.price.toLocaleString()}</span>`:''} $${p.toLocaleString()}</div></div>`;
     c.appendChild(row);
   });
-  const listTotal = sel.reduce((s,x) => s+(n>=2&&x.comboPrice?x.comboPrice:x.price),0);
-  const disc = comboRule?comboRule.save:0;
-  const tot = document.createElement('div'); tot.className='list-row'; tot.style.background='#f7f7f7';
-  tot.innerHTML=`
-    <div style="font-weight:700;font-size:13px">合計</div>
-    <div>
-      ${disc?`<div style="font-size:11px;color:#888;text-align:right">定價 $${listTotal.toLocaleString()} − 合報 $${disc.toLocaleString()}</div>`:''}
-      <div style="font-size:18px;font-weight:700;color:var(--navy);text-align:right">$${(listTotal-disc).toLocaleString()}</div>
-    </div>`;
+  if(g.returnDiscount&&n>0){
+    const note=document.createElement('div');
+    note.style.cssText='padding:7px 15px;font-size:10px;color:#6688cc;background:#f0f4ff;border-top:1px solid #dde8ff;';
+    note.textContent=`📌 舊生另享每科 $${g.returnDiscount.toLocaleString()} 優惠，請告知招生老師`;
+    c.appendChild(note);
+  }
+  const listTotal=sel.reduce((s,x)=>s+(n>=2&&x.comboPrice?x.comboPrice:x.price),0);
+  const disc=comboRule?comboRule.save:0;
+  const tot=document.createElement('div'); tot.className='list-row'; tot.style.background='#f7f7f7';
+  tot.innerHTML=`<div style="font-weight:700;font-size:12px">合計</div>
+    <div>${disc?`<div style="font-size:10px;color:#888;text-align:right">定價 $${listTotal.toLocaleString()} − 合報 $${disc.toLocaleString()}</div>`:''}
+    <div style="font-size:17px;font-weight:700;color:var(--navy);text-align:right">$${(listTotal-disc).toLocaleString()}</div></div>`;
   c.appendChild(tot);
 }
 
-buildSidebar();
-render();
+// INIT
+renderFlyer('g1');
+buildConfigSidebar('g1');
+renderConfig();
 </script>
 </body>
 </html>
