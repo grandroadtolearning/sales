@@ -5,14 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>得勝者文教｜升學課程</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; scroll-behavior: smooth; }
 :root {
   --math:#2d6a4f; --eng:#1d3557; --sci-p:#5c3d8f; --sci-c:#7b2d8b;
   --chi:#9b2335; --essay:#7b6020; --bg:#f5f4f0; --card:#fff;
   --border:#e8e8e8; --text:#1e1e1e; --muted:#888;
   --gold:#c17f00; --gold-bg:#fff8e7; --navy:#1a1a2e;
 }
-body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; overflow-x:hidden; word-break:keep-all; overflow-wrap:break-word; }
+.br-m { display:none; }
+@media (max-width:760px) { .br-m { display:inline; } }
 
 /* NAV */
 .top-nav { background:var(--navy); color:white; padding:0 20px; display:flex; align-items:stretch; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,.3); }
@@ -122,8 +125,9 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
 .cfg-notice { background:var(--gold-bg); border:2px solid #e8b84b; border-radius:11px; padding:8px 13px; font-size:12px; color:#7a5c00; font-weight:600; display:none; }
 .cfg-notice.show { display:block; }
 .cal-card { background:var(--card); border-radius:13px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.05); }
+.cal-card-inner { overflow-x:auto; -webkit-overflow-scrolling:touch; }
 .cal-title { padding:10px 15px; font-size:12px; font-weight:700; border-bottom:1px solid var(--border); }
-.cal-grid { display:grid; grid-template-columns:36px repeat(7,1fr); }
+.cal-grid { display:grid; grid-template-columns:36px repeat(7,1fr); min-width:320px; }
 .cal-head { background:#f7f7f7; text-align:center; padding:5px 3px; font-size:10px; font-weight:700; border-bottom:1px solid var(--border); border-right:1px solid var(--border); }
 .cal-head:last-child { border-right:none; }
 .cal-tlabel { font-size:9px; color:var(--muted); display:flex; align-items:center; justify-content:center; border-right:1px solid var(--border); border-bottom:1px solid var(--border); padding:2px; }
@@ -171,6 +175,20 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
   .subject-grid { grid-template-columns:1fr; }
   .combo-grid { grid-template-columns:repeat(2,1fr); }
   .trial-grid { grid-template-columns:1fr; }
+  /* nav tabs 手機縮小 */
+  .nav-brand { padding:8px 10px 8px 0; margin-right:8px; }
+  .nav-brand h1 { font-size:12px; }
+  .nav-tab { padding:0 9px; font-size:11px; gap:3px; }
+  .nav-badge { display:none; }
+  /* grade pills 壓縮 */
+  .grade-bar { padding:6px 12px; gap:5px; }
+  .grade-pill { padding:4px 10px; font-size:10px; }
+  /* flyer / trial scroll padding */
+  .flyer-scroll, .trial-scroll { padding:12px 12px 24px; }
+  /* cfg-main padding */
+  .cfg-main { padding:10px; }
+  /* 避免 prem-stage 在單欄時太擠 */
+  .prem-stage { min-width:120px; }
 }
 </style>
 </head>
@@ -193,6 +211,7 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
     <div class="grade-pill active" onclick="switchGrade('g1','flyer')" id="gp-flyer-g1">118 高一上</div>
     <div class="grade-pill" onclick="switchGrade('g2','flyer')" id="gp-flyer-g2">117 高二上</div>
     <div class="grade-pill" onclick="switchGrade('g12','flyer')" id="gp-flyer-g12">117 一升二（暑期）</div>
+    <div class="grade-pill" onclick="switchGrade('g3','flyer')" id="gp-flyer-g3">116 高三衝刺班</div>
   </div>
   <div class="flyer-scroll" id="flyer-content"></div>
 </div>
@@ -204,6 +223,7 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
     <div class="grade-pill active" onclick="switchGrade('g1','config')" id="gp-config-g1">118 高一上</div>
     <div class="grade-pill" onclick="switchGrade('g2','config')" id="gp-config-g2">117 高二上</div>
     <div class="grade-pill" onclick="switchGrade('g12','config')" id="gp-config-g12">117 一升二（暑期）</div>
+    <div class="grade-pill" onclick="switchGrade('g3','config')" id="gp-config-g3">116 高三衝刺班</div>
   </div>
   <div class="config-layout">
     <div class="sidebar">
@@ -223,7 +243,9 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
       <div class="cfg-notice" id="cfg-notice"></div>
       <div class="cal-card">
         <div class="cal-title">📅 每週上課行程</div>
-        <div class="cal-grid" id="cfg-cal"></div>
+        <div class="cal-card-inner">
+          <div class="cal-grid" id="cfg-cal"></div>
+        </div>
       </div>
       <div class="list-card">
         <div class="list-title">📋 已選課程明細</div>
@@ -323,7 +345,7 @@ const GRADE_DATA = {
       {id:'ph2', group:'sci', color:'#5c3d8f', name:'陸懂 物理', tag:'三晚（週三晚上）', day:3,slot:'晚',price:22800},
       {id:'dx2a',group:'math',color:'#2d6a4f', name:'大小解數學', tag:'四晚（週四晚上）',day:4,slot:'晚',price:24800},
       {id:'dx2b',group:'math',color:'#2d6a4f', name:'大小解數學', tag:'六早（週六早上）',day:6,slot:'早',price:24800},
-      {id:'lm2', group:'math',color:'#2d6a4f', name:'菱牧 數學', tag:'三晚（週三晚上）', day:3,slot:'晚',price:24800},
+      {id:'lm2', group:'math',color:'#2d6a4f', name:'蔡牧 數學', tag:'三晚（週三晚上）', day:3,slot:'晚',price:24800},
       {id:'jz2', group:'math',color:'#2d6a4f', name:'建州 數學', tag:'六晚（週六晚上）', day:6,slot:'晚',price:24800},
       {id:'pm2', group:'math',color:'#2d6a4f', name:'私中 數學', tag:'日午（週日中午）', day:0,slot:'午',price:24800},
     ],
@@ -355,12 +377,120 @@ const GRADE_DATA = {
       {min:4,save:600,label:'4科合報'},{min:5,save:800,label:'5科合報'},
     ],
   },
+  g3: {
+    id:'g3', label:'116 學測衝刺班（升高三）', returnDiscount:10000,
+    courses:[
+      {id:'g3-iyaed', group:'premium', color:'#1a1a2e', name:'醫牙電資全科班', tag:'115/5/16起 ｜ 週一～六全天 ｜ 壽德大樓6F', day:-1,slot:'tbd',price:148000},
+      {id:'g3-may',   group:'full',    color:'#2d6a4f', name:'五月全科複習班', tag:'115/5/23起（40堂）｜ 週一～六 ｜ 壽德大樓6F', day:-1,slot:'tbd',price:118000},
+      {id:'g3-jul',   group:'full',    color:'#1d3557', name:'七月全科複習班', tag:'115/7/1起（40堂）｜ 週一～六 ｜ 壽德大樓6F', day:-1,slot:'tbd',price:108000},
+      // 單科複習班
+      {id:'g3-chi',       group:'review', color:'#9b2335', name:'國文複習',            tag:'115/7/1–115/12/15 ｜ 24堂',          day:-1,slot:'tbd',price:25800},
+      {id:'g3-eng-p',     group:'review', color:'#1d3557', name:'英文複習（Penny）',   tag:'115/7/1–115/12/15 ｜ 24堂',          day:-1,slot:'tbd',price:25800},
+      {id:'g3-eng-g',     group:'review', color:'#1d3557', name:'英文複習（Gary）',    tag:'115/7/1–115/12/15 ｜ 24堂',          day:-1,slot:'tbd',price:25800},
+      {id:'g3-eng-f',     group:'review', color:'#1d3557', name:'英文複習（Fran）',    tag:'115/7/1–115/12/15 ｜ 24堂',          day:-1,slot:'tbd',price:25800},
+      {id:'g3-math5-jcz', group:'review', color:'#2d6a4f', name:'數學複習5月（解創智）',tag:'115/5/23–115/12/15 ｜ 42堂',        day:-1,slot:'tbd',price:43600},
+      {id:'g3-math5-hy',  group:'review', color:'#2d6a4f', name:'數學複習5月（洪宇）',  tag:'115/5/23–115/12/15 ｜ 42堂',        day:-1,slot:'tbd',price:43600},
+      {id:'g3-sci',       group:'review', color:'#5c3d8f', name:'自然複習',            tag:'115/7/1–115/12/15 ｜ 物化生科共42堂', day:-1,slot:'tbd',price:40000},
+      {id:'g3-soc',       group:'review', color:'#5c5c00', name:'社會複習',            tag:'115/7/1–115/12/15 ｜ 歷地公共42堂',  day:-1,slot:'tbd',price:40000},
+      // 醫科自然
+      {id:'g3-msci',  group:'iyaed-sci', color:'#7b2d8b', name:'醫科自然複習',     tag:'115/5/17–115/12/15 ｜ 物化生科共59堂 ｜ 壽德大樓6F',      day:-1,slot:'tbd',price:58000},
+      // 讀考班
+      {id:'g3-dk78',  group:'dukao',     color:'#1a1a2e', name:'讀考班（7-8月）',   tag:'115/7/1–115/8/31 ｜ 壽德大樓6F',                          day:-1,slot:'tbd',price:22800,excludeCombo:true},
+      {id:'g3-dk91',  group:'dukao',     color:'#1a1a2e', name:'讀考班（9月-1月）', tag:'115/9/1–116/1/16 ｜ 壽德大樓6F',                          day:-1,slot:'tbd',price:38000,excludeCombo:true},
+    ],
+    groups:[
+      {id:'premium',   label:'頂尖全科班（醫牙電資）', color:'#1a1a2e'},
+      {id:'full',      label:'全科複習班',             color:'#2d6a4f'},
+      {id:'review',    label:'單科複習班',             color:'#9b2335'},
+      {id:'iyaed-sci', label:'醫科自然複習',           color:'#7b2d8b'},
+      {id:'dukao',     label:'讀考班',                 color:'#1a1a2e'},
+    ],
+    combo:[],
+  },
 };
 
 const DAYS=['日','一','二','三','四','五','六'];
 const SLOTS=['早','午','晚'];
 let activeGradeFlyer='g1', activeGradeConfig='g1';
 let selected=new Set();
+let g3MathChoice=null; // '建州'|'解創智'|'魏上智'
+let g3JulTrack=null, g3JulMath=null, g3JulChi=null, g3JulEng=null;
+let g3JulStep=1;
+
+const G3_MATH_OPTS=[
+  {id:'建州',   label:'陳建州',  tag:'週五晚', day:5, slot:'晚'},
+  {id:'解創智', label:'解創智',  tag:'週五晚', day:5, slot:'晚'},
+  {id:'魏上智', label:'魏上智',  tag:'週三晚', day:3, slot:'晚'},
+];
+const G3_BASE_SCHEDULE=[
+  {day:1,slot:'晚',label:'自然複習'},
+  {day:2,slot:'晚',label:'自然複習'},
+  {day:6,slot:'早',label:'國文怡樺'},
+  {day:6,slot:'午',label:'英文Penny'},
+  {day:6,slot:'晚',label:'自然複習'},
+];
+
+// 七月班 teacher options
+const G3_JUL_MATH_OPTS=[
+  {id:'洪宇',  label:'洪宇',  slots:[{day:3,slot:'晚'},{day:6,slot:'早'}]},
+  {id:'大小解',label:'大小解',slots:[{day:3,slot:'晚'},{day:6,slot:'午'}]},
+];
+const G3_JUL_CHI_OPTS=[
+  {id:'怡樺-早',label:'怡樺',tag:'週六早',slots:[{day:6,slot:'早'}]},
+  {id:'怡樺-午',label:'怡樺',tag:'週六午',slots:[{day:6,slot:'午'}]},
+  {id:'古祥-早',label:'古祥',tag:'週六早',slots:[{day:6,slot:'早'}]},
+];
+const G3_JUL_ENG_OPTS=[
+  {id:'Penny-六午',label:'Penny',tag:'週六午',slots:[{day:6,slot:'午'}]},
+  {id:'Gary-日早', label:'Gary', tag:'週日早',slots:[{day:0,slot:'早'}]},
+  {id:'Gary-六午', label:'Gary', tag:'週六午',slots:[{day:6,slot:'午'}]},
+  {id:'Fran-日午', label:'Fran', tag:'週日午',slots:[{day:0,slot:'午'}]},
+];
+
+function showJulModal(){
+  g3JulStep=1; renderJulModal();
+  document.getElementById('jul-modal').style.display='flex';
+}
+function hideJulModal(){
+  document.getElementById('jul-modal').style.display='none';
+}
+function renderJulModal(){
+  for(let i=1;i<=4;i++){
+    const s=document.getElementById('jul-step-'+i);
+    if(s) s.style.display=i===g3JulStep?'block':'none';
+    const d=document.getElementById('jul-dot-'+i);
+    if(d) d.style.background=i<g3JulStep?'#1d3557':i===g3JulStep?'#2d6a4f':'#ddd';
+  }
+  const back=document.getElementById('jul-back-btn');
+  if(back) back.style.visibility=g3JulStep>1?'visible':'hidden';
+}
+function julSelectTrack(t){ g3JulTrack=t; g3JulStep=2; renderJulModal(); }
+function julSelectMath(m){  g3JulMath=m;  g3JulStep=3; renderJulModal(); }
+function julSelectChi(c){   g3JulChi=c;   g3JulStep=4; renderJulModal(); }
+function julSelectEng(e){
+  g3JulEng=e; selected.add('g3-jul'); hideJulModal(); renderConfig();
+}
+function julBack(){
+  if(g3JulStep>1){ g3JulStep--; renderJulModal(); }
+}
+function julCancelCourse(){
+  selected.delete('g3-jul');
+  g3JulTrack=null; g3JulMath=null; g3JulChi=null; g3JulEng=null; g3JulStep=1;
+  hideJulModal(); renderConfig();
+}
+
+function showMathModal(){
+  document.getElementById('math-modal').style.display='flex';
+}
+function hideMathModal(){
+  document.getElementById('math-modal').style.display='none';
+}
+function selectMath(id){
+  g3MathChoice=id;
+  selected.add('g3-iyaed');
+  hideMathModal();
+  renderConfig();
+}
 
 // ═══════ TAB SWITCH ═══════
 function switchTab(name){
@@ -374,11 +504,11 @@ function switchTab(name){
 function switchGrade(gid,panel){
   if(panel==='flyer'){
     activeGradeFlyer=gid;
-    ['g1','g2','g12'].forEach(g=>document.getElementById('gp-flyer-'+g).classList.toggle('active',g===gid));
+    ['g1','g2','g12','g3'].forEach(g=>document.getElementById('gp-flyer-'+g).classList.toggle('active',g===gid));
     renderFlyer(gid);
   } else {
     activeGradeConfig=gid;
-    ['g1','g2','g12'].forEach(g=>document.getElementById('gp-config-'+g).classList.toggle('active',g===gid));
+    ['g1','g2','g12','g3'].forEach(g=>document.getElementById('gp-config-'+g).classList.toggle('active',g===gid));
     selected.clear();
     buildConfigSidebar(gid);
     renderConfig();
@@ -387,6 +517,7 @@ function switchGrade(gid,panel){
 
 // ═══════ FLYER ═══════
 function comboHTML(combo,lastNote=''){
+  if(!combo||!combo.length) return '';
   return `<div class="combo-banner">
     <div class="combo-title">💰 合報優惠（越多科越划算）</div>
     <div class="combo-grid">
@@ -399,7 +530,8 @@ function renderFlyer(gid){
   const el=document.getElementById('flyer-content');
   if(gid==='g1') el.innerHTML=flyerG1(g);
   else if(gid==='g2') el.innerHTML=flyerG2(g);
-  else el.innerHTML=flyerG12(g);
+  else if(gid==='g12') el.innerHTML=flyerG12(g);
+  else el.innerHTML=flyerG3(g);
 }
 
 function flyerG1(g){return `
@@ -454,7 +586,6 @@ function flyerG1(g){return `
   <div class="flyer-footer">得勝者文教 · 以上課程均為「新報」方案 · 詳洽現場招生老師</div>`;}
 
 function flyerG2(g){return `
-  <div class="return-notice">📌 舊生優惠：每科學費減 $2,000（在定價基礎上直接折扣）</div>
   ${comboHTML(g.combo,'')}
   <div class="example-box">
     <div class="example-title">📋 試算範例：數學＋英文＋自然（3科，新生）</div>
@@ -469,7 +600,7 @@ function flyerG2(g){return `
       <div class="subject-head" style="background:var(--math)"><span class="subject-icon">📐</span><span class="subject-label">數學 $24,800</span></div>
       <div class="course-row"><div><div class="c-name">大小解數學（四晚）</div><div class="c-meta">115/7/16 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
       <div class="course-row"><div><div class="c-name">大小解數學（六早）</div><div class="c-meta">115/7/18 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
-      <div class="course-row"><div><div class="c-name">菱牧 數學（三晚）</div><div class="c-meta">115/7/15 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
+      <div class="course-row"><div><div class="c-name">蔡牧 數學（三晚）</div><div class="c-meta">115/7/15 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
       <div class="course-row"><div><div class="c-name">建州 數學（六晚）</div><div class="c-meta">115/7/18 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
       <div class="course-row"><div><div class="c-name">私中 數學（日午）</div><div class="c-meta">115/7/19 – 116/1/10</div></div><div class="c-price" style="color:var(--math)">$24,800</div></div>
     </div>
@@ -521,6 +652,51 @@ function flyerG12(g){return `
   <button class="cta-btn" onclick="switchTab('config');switchGrade('g12','config')">🧮 開始選課配置 →</button>
   <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師</div>`;}
 
+function flyerG3(g){return `
+  <div class="premium-card" style="margin-bottom:13px">
+    <div class="prem-name">116 學測衝刺班　升高三完整備戰方案</div>
+    <div class="prem-desc">全科複習 × 多次模擬考 × 醫牙二階面試訓練 · 師資傳奇，配合學長姐輔導團</div>
+    <div class="prem-stages" style="margin-top:10px">
+      <div class="prem-stage">
+        <div class="ps-name">🏆 醫牙電資全科班</div>
+        <div class="ps-date">115/5/16 起 ｜ 須金刀老師面談入班</div>
+        <div class="ps-date" style="color:#e8c97a">週一～六全天 ｜ 壽德大樓6F</div>
+        <div class="ps-price">$148,000</div>
+      </div>
+      <div class="prem-stage">
+        <div class="ps-name">五月全科複習班</div>
+        <div class="ps-date">115/5/23 起（40堂）</div>
+        <div class="ps-date" style="color:#e8c97a">週一～六 ｜ 壽德大樓6F</div>
+        <div class="ps-price">$118,000</div>
+      </div>
+      <div class="prem-stage">
+        <div class="ps-name">七月全科複習班</div>
+        <div class="ps-date">115/7/1 起（40堂）</div>
+        <div class="ps-date" style="color:#e8c97a">週一～六 ｜ 壽德大樓6F</div>
+        <div class="ps-price">$108,000</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title">📚 課程包含內容</div>
+  <div class="subject-grid">
+    <div class="subject-card">
+      <div class="subject-head" style="background:#2d6a4f"><span class="subject-icon">📋</span><span class="subject-label">全科課程內容</span></div>
+      <div class="course-row"><div><div class="c-name">國文（怡樺／古祥）</div><div class="c-meta">精讀複習 + 寫作鍛鍊</div></div></div>
+      <div class="course-row"><div><div class="c-name">英文（Penny／Gary／Fran）</div><div class="c-meta">閱讀 + 作文 + 單字</div></div></div>
+      <div class="course-row"><div><div class="c-name">數學（解創智・建州・魏上智・洪宇）</div><div class="c-meta">複習 + 示範測驗</div></div></div>
+      <div class="course-row"><div><div class="c-name">自然 or 社會複習</div><div class="c-meta">擇一組，滾動式測驗進度</div></div></div>
+    </div>
+    <div class="subject-card">
+      <div class="subject-head" style="background:#1a1a2e"><span class="subject-icon">🏅</span><span class="subject-label">加值特色</span></div>
+      <div class="course-row"><div><div class="c-name">多次全國模擬考</div><div class="c-meta">含詳細訂正與個別輔導</div></div></div>
+      <div class="course-row"><div><div class="c-name">醫牙中二階面試訓練</div><div class="c-meta">個人/小組/模擬面試 · 全科班生免費</div></div></div>
+      <div class="course-row"><div><div class="c-name">學長姐輔導團</div><div class="c-meta">醫學・牙醫・中醫系學長姐預約輔導，任何科目皆可詢問</div></div></div>
+      <div class="course-row"><div><div class="c-name">牙科術科仿真訓練</div><div class="c-meta">雕刻・素描・模擬術科考（醫牙電資班限定）</div></div></div>
+    </div>
+  </div>
+  <button class="cta-btn" onclick="switchTab('config');switchGrade('g3','config')">🧮 開始選課配置 →</button>
+  <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師 · 02-2314-5818</div>`;}
+
 // ═══════ CONFIG SIDEBAR ═══════
 function buildConfigSidebar(gid){
   const g=GRADE_DATA[gid];
@@ -541,11 +717,17 @@ function buildConfigSidebar(gid){
     courses.forEach(c=>{
       const chip=document.createElement('div'); chip.className='c-chip'; chip.dataset.id=c.id;
       chip.style.setProperty('--chip-color',c.color);
-      chip.onclick=()=>{selected.has(c.id)?selected.delete(c.id):selected.add(c.id); renderConfig();};
+      if(c.id==='g3-iyaed'){
+        chip.onclick=()=>{ showMathModal(); };
+      } else if(c.id==='g3-jul'){
+        chip.onclick=()=>{ showJulModal(); };
+      } else {
+        chip.onclick=()=>{selected.has(c.id)?selected.delete(c.id):selected.add(c.id); renderConfig();};
+      }
       chip.innerHTML=`
         <div class="c-chk" id="chk-${c.id}">✓</div>
         <div class="c-chip-info"><div class="c-chip-name">${c.name}</div><div class="c-chip-meta">${c.tag}</div></div>
-        <div class="c-chip-price">$${c.price.toLocaleString()}</div>`;
+        <div class="c-chip-price">${c.priceTBD?'洽詢':'$'+c.price.toLocaleString()}</div>`;
       body.appendChild(chip);
     });
   });
@@ -576,7 +758,7 @@ function renderConfig(){
   if(comboRule){
     notice.className='cfg-notice show'; notice.style.cssText='';
     notice.textContent=`🎉 ${comboRule.label}優惠：折抵 $${comboRule.save.toLocaleString()}！`;
-  } else if(n===1){
+  } else if(n===1&&g.combo&&g.combo.length){
     notice.className='cfg-notice show';
     notice.style.background='#f0f4ff'; notice.style.borderColor='#99aaf0'; notice.style.color='#334';
     notice.textContent=`💡 再加報 1 科即享合報優惠（省 $${g.combo[0].save.toLocaleString()} 起）`;
@@ -588,15 +770,36 @@ function renderConfig(){
 
 function renderCalendar(sel){
   const cal=document.getElementById('cfg-cal'); cal.innerHTML='';
+  // Expand courses with schedule arrays into individual time-slot entries
+  const entries=[];
+  sel.forEach(c=>{
+    if(c.id==='g3-iyaed'&&g3MathChoice){
+      const opt=G3_MATH_OPTS.find(o=>o.id===g3MathChoice);
+      G3_BASE_SCHEDULE.forEach(s=>entries.push({...c, day:s.day, slot:s.slot, _label:s.label}));
+      if(opt) entries.push({...c, day:opt.day, slot:opt.slot, _label:opt.label+'數複'});
+    } else if(c.id==='g3-jul'&&g3JulTrack){
+      [1,2].forEach(d=>entries.push({...c, day:d, slot:'晚', _label:g3JulTrack+'複習'}));
+      const jm=G3_JUL_MATH_OPTS.find(o=>o.id===g3JulMath);
+      if(jm) jm.slots.forEach(s=>entries.push({...c, day:s.day, slot:s.slot, _label:g3JulMath+'數複'}));
+      const jc=G3_JUL_CHI_OPTS.find(o=>o.id===g3JulChi);
+      if(jc) jc.slots.forEach(s=>entries.push({...c, day:s.day, slot:s.slot, _label:'國文'+g3JulChi}));
+      const je=G3_JUL_ENG_OPTS.find(o=>o.id===g3JulEng);
+      if(je) je.slots.forEach(s=>entries.push({...c, day:s.day, slot:s.slot, _label:'英文'+g3JulEng}));
+    } else if(c.schedule){
+      c.schedule.forEach(s=>entries.push({...c, day:s.day, slot:s.slot, _label:s.label}));
+    } else {
+      entries.push(c);
+    }
+  });
   const e=document.createElement('div'); e.className='cal-head'; cal.appendChild(e);
   DAYS.forEach(d=>{const h=document.createElement('div'); h.className='cal-head'; h.textContent=`週${d}`; cal.appendChild(h);});
   SLOTS.forEach(slot=>{
     const tl=document.createElement('div'); tl.className='cal-tlabel'; tl.textContent=slot; cal.appendChild(tl);
     for(let d=0;d<7;d++){
       const cell=document.createElement('div'); cell.className='cal-cell';
-      sel.filter(c=>c.day===d&&c.slot===slot).forEach(c=>{
+      entries.filter(c=>c.day===d&&c.slot===slot).forEach(c=>{
         const ev=document.createElement('div'); ev.className='cal-event';
-        ev.style.background=c.color; ev.textContent=sName(c.name); cell.appendChild(ev);
+        ev.style.background=c.color; ev.textContent=c._label||sName(c.name); cell.appendChild(ev);
       });
       cal.appendChild(cell);
     }
@@ -606,15 +809,23 @@ function renderCalendar(sel){
     const tl=document.createElement('div'); tl.className='cal-tlabel'; tl.textContent='TBD'; tl.style.background='#f7f7f7'; cal.appendChild(tl);
     const sp=document.createElement('div');
     sp.style.cssText='grid-column:span 7;border-bottom:1px solid var(--border);padding:4px 7px;display:flex;flex-wrap:wrap;gap:3px;align-items:center;';
-    tbd.forEach(c=>{const ev=document.createElement('div'); ev.className='cal-event'; ev.style.background=c.color; ev.style.opacity='.8'; ev.textContent=sName(c.name)+'（洽詢）'; sp.appendChild(ev);});
+    tbd.forEach(c=>{const ev=document.createElement('div'); ev.className='cal-event'; ev.style.background=c.color; ev.style.opacity='.8'; ev.textContent=sName(c.name)+(c.priceTBD?'（洽詢）':'（待確認）'); sp.appendChild(ev);});
     cal.appendChild(sp);
   }
 }
 
 function sName(n){
   return n.replace(/數學巔峰班 /,'巔峰').replace(/ [一二三]/,'')
-          .replace(/陸怡中 |陸懂 |金刀 |韻慈 |洪晏 |怡樺 |菱牧 |建州 |私中 |大小解/g,m=>m==='大小解'?'大小解':'')
+          .replace(/陸怡中 |陸懂 |金刀 |韻慈 |洪晏 |怡樺 |蔡牧 |建州 |私中 |大小解/g,m=>m==='大小解'?'大小解':'')
           .replace(/ 8週班/,'').replace(/模考班 /,'').replace(/讀考班/,'讀考')
+          .replace(/醫牙電資全科班/,'醫牙電資').replace(/五月全科複習班/,'五月班').replace(/七月全科複習班/,'七月班')
+          .replace(/週六班（怡樺・Penny）/,'週六班').replace(/週六A班（古祥・Gary）/,'週六A班')
+          .replace(/醫科自然複習/,'醫科自')
+          .replace(/數學複習5月（解創智）/,'數5解').replace(/數學複習5月（建州）/,'數5州').replace(/數學複習5月（魏上智）/,'數5魏').replace(/數學複習5月（洪宇）/,'數5宇')
+          .replace(/數學複習（解創智）/,'數複解').replace(/數學複習（建州）/,'數複州').replace(/數學複習（魏上智）/,'數複魏').replace(/數學複習（洪宇）/,'數複宇')
+          .replace(/英文複習（Penny）/,'英複P').replace(/英文複習（Gary）/,'英複G').replace(/英文複習（Fran）/,'英複F')
+          .replace(/國文複習/,'國複').replace(/自然複習/,'自複').replace(/社會複習/,'社複')
+          .replace(/讀考班（7-8月）/,'讀考7-8').replace(/讀考班（9月-1月）/,'讀考9-1')
           .replace(/數學$/,'數').replace(/英文$/,'英').replace(/物理$/,'物')
           .replace(/化學$/,'化').replace(/國文$/,'國').replace(/社會$/,'社').replace(/自然$/,'自');
 }
@@ -631,12 +842,6 @@ function renderList(sel,comboRule,n,g){
       <div style="color:${course.color};font-size:13px;font-weight:700"><div class="price-line">${use?`<span class="striked">$${course.price.toLocaleString()}</span>`:''} $${p.toLocaleString()}</div></div>`;
     c.appendChild(row);
   });
-  if(g.returnDiscount&&n>0){
-    const note=document.createElement('div');
-    note.style.cssText='padding:7px 15px;font-size:10px;color:#6688cc;background:#f0f4ff;border-top:1px solid #dde8ff;';
-    note.textContent=`📌 舊生另享每科 $${g.returnDiscount.toLocaleString()} 優惠，請告知招生老師`;
-    c.appendChild(note);
-  }
   const listTotal=sel.reduce((s,x)=>s+(n>=2&&x.comboPrice?x.comboPrice:x.price),0);
   const disc=comboRule?comboRule.save:0;
   const tot=document.createElement('div'); tot.className='list-row'; tot.style.background='#f7f7f7';
@@ -651,5 +856,163 @@ renderFlyer('g1');
 buildConfigSidebar('g1');
 renderConfig();
 </script>
+
+<!-- 七月班：自然/社會組 Modal -->
+<div id="jul-modal" onclick="if(event.target===this)hideJulModal()"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:18px;padding:24px 22px;max-width:360px;width:92%;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+    <!-- progress dots -->
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px">
+      <div id="jul-dot-1" style="width:8px;height:8px;border-radius:50%;background:#2d6a4f;transition:background .2s"></div>
+      <div id="jul-dot-2" style="width:8px;height:8px;border-radius:50%;background:#ddd;transition:background .2s"></div>
+      <div id="jul-dot-3" style="width:8px;height:8px;border-radius:50%;background:#ddd;transition:background .2s"></div>
+      <div id="jul-dot-4" style="width:8px;height:8px;border-radius:50%;background:#ddd;transition:background .2s"></div>
+    </div>
+    <!-- step 1: 組別 -->
+    <div id="jul-step-1">
+      <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px">📚 1／4：選擇組別</div>
+      <div style="font-size:11px;color:#888;margin-bottom:14px">週一・週二晚的複習科目依組別顯示</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="julSelectTrack('自然')"
+          style="flex:1;border:2px solid #5c3d8f;border-radius:11px;padding:16px 12px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f5f0ff'" onmouseout="this.style.background='white'">
+          <div style="font-size:18px;margin-bottom:4px">🔬</div>
+          <div style="font-size:13px;font-weight:700;color:#5c3d8f">自然組</div>
+        </button>
+        <button onclick="julSelectTrack('社會')"
+          style="flex:1;border:2px solid #7a5c00;border-radius:11px;padding:16px 12px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#fff8e7'" onmouseout="this.style.background='white'">
+          <div style="font-size:18px;margin-bottom:4px">🌏</div>
+          <div style="font-size:13px;font-weight:700;color:#7a5c00">社會組</div>
+        </button>
+      </div>
+    </div>
+    <!-- step 2: 數學 -->
+    <div id="jul-step-2" style="display:none">
+      <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px">🔢 2／4：選擇數學老師</div>
+      <div style="font-size:11px;color:#888;margin-bottom:14px">每週兩堂數學複習</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="julSelectMath('洪宇')"
+          style="flex:1;border:2px solid #2d6a4f;border-radius:11px;padding:16px 12px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0fff5'" onmouseout="this.style.background='white'">
+          <div style="font-size:14px;font-weight:700;color:#2d6a4f;margin-bottom:5px">洪宇</div>
+          <div style="font-size:10px;color:#888">週三晚・週六早</div>
+        </button>
+        <button onclick="julSelectMath('大小解')"
+          style="flex:1;border:2px solid #2d6a4f;border-radius:11px;padding:16px 12px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0fff5'" onmouseout="this.style.background='white'">
+          <div style="font-size:14px;font-weight:700;color:#2d6a4f;margin-bottom:5px">大小解</div>
+          <div style="font-size:10px;color:#888">週三晚・週六午</div>
+        </button>
+      </div>
+    </div>
+    <!-- step 3: 國文 -->
+    <div id="jul-step-3" style="display:none">
+      <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px">📖 3／4：選擇國文老師・時段</div>
+      <div style="font-size:11px;color:#888;margin-bottom:14px">選擇老師與上課時段（擇一）</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="julSelectChi('怡樺-早')"
+          style="flex:1;border:2px solid #9b2335;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#9b2335;margin-bottom:4px">怡樺</div>
+          <div style="font-size:10px;color:#888">週六早</div>
+        </button>
+        <button onclick="julSelectChi('怡樺-午')"
+          style="flex:1;border:2px solid #9b2335;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#9b2335;margin-bottom:4px">怡樺</div>
+          <div style="font-size:10px;color:#888">週六午</div>
+        </button>
+        <button onclick="julSelectChi('古祥-早')"
+          style="flex:1;border:2px solid #9b2335;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#9b2335;margin-bottom:4px">古祥</div>
+          <div style="font-size:10px;color:#888">週六早</div>
+        </button>
+      </div>
+    </div>
+    <!-- step 4: 英文 -->
+    <div id="jul-step-4" style="display:none">
+      <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px">🌐 4／4：選擇英文老師・時段</div>
+      <div style="font-size:11px;color:#888;margin-bottom:14px">選擇老師與上課時段（擇一）</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="julSelectEng('Penny-六午')"
+          style="border:2px solid #1d3557;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#1d3557;margin-bottom:4px">Penny</div>
+          <div style="font-size:10px;color:#888">週六午</div>
+        </button>
+        <button onclick="julSelectEng('Gary-日早')"
+          style="border:2px solid #1d3557;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#1d3557;margin-bottom:4px">Gary</div>
+          <div style="font-size:10px;color:#888">週日早</div>
+        </button>
+        <button onclick="julSelectEng('Gary-六午')"
+          style="border:2px solid #1d3557;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#1d3557;margin-bottom:4px">Gary</div>
+          <div style="font-size:10px;color:#888">週六午</div>
+        </button>
+        <button onclick="julSelectEng('Fran-日午')"
+          style="border:2px solid #1d3557;border-radius:11px;padding:14px 8px;background:white;cursor:pointer;font-family:inherit;transition:background .15s"
+          onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">
+          <div style="font-size:13px;font-weight:700;color:#1d3557;margin-bottom:4px">Fran</div>
+          <div style="font-size:10px;color:#888">週日午</div>
+        </button>
+      </div>
+    </div>
+    <!-- footer -->
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button id="jul-back-btn" onclick="julBack()"
+        style="flex:1;border:1px solid #e8e8e8;border-radius:9px;padding:8px;background:white;cursor:pointer;font-size:12px;color:#555;font-family:inherit;visibility:hidden">
+        ← 上一步
+      </button>
+      <button onclick="julCancelCourse()"
+        style="flex:1;border:1px solid #e0d0d0;border-radius:9px;padding:8px;background:white;cursor:pointer;font-size:12px;color:#c0392b;font-family:inherit">
+        取消選課
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 數學老師選擇 Modal -->
+<div id="math-modal" onclick="if(event.target===this)hideMathModal()"
+  style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:18px;padding:24px 22px;max-width:340px;width:92%;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+    <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:4px">📐 選擇數學老師</div>
+    <div style="font-size:11px;color:#888;margin-bottom:18px">課表會依選擇自動排入行事曆</div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <button onclick="selectMath('建州')"
+        style="border:2px solid #2d6a4f;border-radius:11px;padding:12px 16px;background:white;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s"
+        onmouseover="this.style.background='#f0faf4'" onmouseout="this.style.background='white'">
+        <div style="font-size:13px;font-weight:700;color:#2d6a4f">陳建州</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">週五晚 ｜ 壽德大樓6F</div>
+      </button>
+      <button onclick="selectMath('解創智')"
+        style="border:2px solid #2d6a4f;border-radius:11px;padding:12px 16px;background:white;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s"
+        onmouseover="this.style.background='#f0faf4'" onmouseout="this.style.background='white'">
+        <div style="font-size:13px;font-weight:700;color:#2d6a4f">解創智</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">週五晚 ｜ 壽德大樓6F</div>
+      </button>
+      <button onclick="selectMath('魏上智')"
+        style="border:2px solid #2d6a4f;border-radius:11px;padding:12px 16px;background:white;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s"
+        onmouseover="this.style.background='#f0faf4'" onmouseout="this.style.background='white'">
+        <div style="font-size:13px;font-weight:700;color:#2d6a4f">魏上智</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">週三晚 ｜ 壽德大樓6F</div>
+      </button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button onclick="hideMathModal()"
+        style="flex:1;border:1px solid #e8e8e8;border-radius:9px;padding:8px;background:white;cursor:pointer;font-size:12px;color:#888;font-family:inherit">
+        關閉
+      </button>
+      <button onclick="selected.delete('g3-iyaed');g3MathChoice=null;hideMathModal();renderConfig();"
+        style="flex:1;border:1px solid #e0d0d0;border-radius:9px;padding:8px;background:white;cursor:pointer;font-size:12px;color:#c0392b;font-family:inherit">
+        取消選課
+      </button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
