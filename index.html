@@ -212,6 +212,7 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
     <div class="grade-pill" onclick="switchGrade('g2','flyer')" id="gp-flyer-g2">117 高二上</div>
     <div class="grade-pill" onclick="switchGrade('g12','flyer')" id="gp-flyer-g12">117 一升二（暑期）</div>
     <div class="grade-pill" onclick="switchGrade('g3','flyer')" id="gp-flyer-g3">116 高三衝刺班</div>
+    <div class="grade-pill" onclick="switchGrade('gr','flyer')" id="gp-flyer-gr">116 重考班</div>
   </div>
   <div class="flyer-scroll" id="flyer-content"></div>
 </div>
@@ -224,6 +225,7 @@ body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; background:va
     <div class="grade-pill" onclick="switchGrade('g2','config')" id="gp-config-g2">117 高二上</div>
     <div class="grade-pill" onclick="switchGrade('g12','config')" id="gp-config-g12">117 一升二（暑期）</div>
     <div class="grade-pill" onclick="switchGrade('g3','config')" id="gp-config-g3">116 高三衝刺班</div>
+    <div class="grade-pill" onclick="switchGrade('gr','config')" id="gp-config-gr">116 重考班</div>
   </div>
   <div class="config-layout">
     <div class="sidebar">
@@ -407,6 +409,41 @@ const GRADE_DATA = {
     ],
     combo:[],
   },
+
+  gr: {
+    id:'gr', label:'116 再戰學測（重考班）', returnDiscount:10000,
+    courses:[
+      // 頂尖醫科班
+      {id:'gr-med',   group:'iyaed', color:'#1a1a2e', name:'116再戰學測醫科班',    tag:'115/7/13–116/1/16', day:-1,slot:'tbd',price:148000,excludeCombo:true},
+      {id:'gr-smed',  group:'iyaed', color:'#1a1a2e', name:'116再戰學測超醫班',    tag:'115/8/12–116/1/16', day:-1,slot:'tbd',price:148000,excludeCombo:true},
+      {id:'gr-smedA', group:'iyaed', color:'#1a1a2e', name:'116再戰學測超醫A班',   tag:'115/8/19–116/1/16', day:-1,slot:'tbd',price:148000,excludeCombo:true},
+      {id:'gr-rmedA', group:'iyaed', color:'#1a1a2e', name:'116再戰學測再醫A班',   tag:'115/8/3–116/1/16',  day:-1,slot:'tbd',price:148000,excludeCombo:true},
+      {id:'gr-nmed',  group:'iyaed', color:'#1a1a2e', name:'116再戰學測新醫班',    tag:'115/8/17–116/1/16', day:-1,slot:'tbd',price:148000,excludeCombo:true},
+      // 頂醫班
+      {id:'gr-tmed',  group:'top',   color:'#1d3557', name:'116再戰學測頂醫班',    tag:'115/8/4–116/1/16',  day:-1,slot:'tbd',price:138000,excludeCombo:true},
+      {id:'gr-tmedA', group:'top',   color:'#1d3557', name:'116再戰學測頂醫A班',   tag:'115/8/11–116/1/16', day:-1,slot:'tbd',price:138000,excludeCombo:true},
+      // 台財法・前三志願
+      {id:'gr-tfl',   group:'gen',   color:'#2d6a4f', name:'116再戰學測台財法',    tag:'115/8/18–116/1/16', day:-1,slot:'tbd',price:128000,excludeCombo:true},
+      {id:'gr-top3',  group:'gen',   color:'#2d6a4f', name:'116再戰學測前三志願班',tag:'115/8/17–116/1/16', day:-1,slot:'tbd',price:128000,excludeCombo:true},
+      // 線上班
+      {id:'gr-otfl',  group:'online',color:'#5c5c00', name:'116再戰學測線上台財法', tag:'115/8/25–116/1/16', day:-1,slot:'tbd',price:108000,excludeCombo:true},
+      {id:'gr-omed',  group:'online',color:'#7b2d8b', name:'116再戰學測線上醫科班', tag:'115/7/20–116/1/16', day:-1,slot:'tbd',price:118000,excludeCombo:true},
+      // 線上單科
+      {id:'gr-chi',  group:'solo', color:'#9b2335', name:'國文線上單科', tag:'115/7/20–116/1/21 ｜ 24堂', day:-1,slot:'tbd',price:25800,excludeCombo:true},
+      {id:'gr-eng',  group:'solo', color:'#1d3557', name:'英文線上單科', tag:'115/7/20–116/1/21 ｜ 24堂', day:-1,slot:'tbd',price:25800,excludeCombo:true},
+      {id:'gr-math', group:'solo', color:'#2d6a4f', name:'數學線上單科', tag:'115/7/20–116/1/21 ｜ 42堂', day:-1,slot:'tbd',price:42000,excludeCombo:true},
+      {id:'gr-sci',  group:'solo', color:'#5c3d8f', name:'自然線上單科', tag:'115/7/20–116/1/21 ｜ 物化生科46堂', day:-1,slot:'tbd',price:45000,excludeCombo:true},
+      {id:'gr-soc',  group:'solo', color:'#5c5c00', name:'社會線上單科', tag:'115/8/25–116/1/21 ｜ 歷地公共42堂', day:-1,slot:'tbd',price:40000,excludeCombo:true},
+    ],
+    groups:[
+      {id:'iyaed',  label:'頂尖醫科班',      color:'#1a1a2e'},
+      {id:'top',    label:'頂醫班',           color:'#1d3557'},
+      {id:'gen',    label:'台財法・前三志願', color:'#2d6a4f'},
+      {id:'online', label:'線上班',           color:'#5c5c00'},
+      {id:'solo',   label:'線上單科',         color:'#9b2335'},
+    ],
+    combo:[],
+  },
 };
 
 const DAYS=['日','一','二','三','四','五','六'];
@@ -531,7 +568,8 @@ function renderFlyer(gid){
   if(gid==='g1') el.innerHTML=flyerG1(g);
   else if(gid==='g2') el.innerHTML=flyerG2(g);
   else if(gid==='g12') el.innerHTML=flyerG12(g);
-  else el.innerHTML=flyerG3(g);
+  else if(gid==='g3') el.innerHTML=flyerG3(g);
+  else el.innerHTML=flyerGR(g);
 }
 
 function flyerG1(g){return `
@@ -697,6 +735,53 @@ function flyerG3(g){return `
   <button class="cta-btn" onclick="switchTab('config');switchGrade('g3','config')">🧮 開始選課配置 →</button>
   <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師 · 02-2314-5818</div>`;}
 
+function flyerGR(g){
+  const tiers=[
+    {label:'🏆 頂尖醫科班', color:'#1a1a2e', courses:[
+      {name:'116再戰學測醫科班',   date:'115/7/13', end:'116/1/16', price:'$148,000'},
+      {name:'116再戰學測超醫班',   date:'115/8/12', end:'116/1/16', price:'$148,000'},
+      {name:'116再戰學測超醫A班',  date:'115/8/19', end:'116/1/16', price:'$148,000'},
+      {name:'116再戰學測再醫A班',  date:'115/8/3',  end:'116/1/16', price:'$148,000'},
+      {name:'116再戰學測新醫班',   date:'115/8/17', end:'116/1/16', price:'$148,000'},
+    ]},
+    {label:'⭐ 頂醫班', color:'#1d3557', courses:[
+      {name:'116再戰學測頂醫班',   date:'115/8/4',  end:'116/1/16', price:'$138,000'},
+      {name:'116再戰學測頂醫A班',  date:'115/8/11', end:'116/1/16', price:'$138,000'},
+    ]},
+    {label:'📘 台財法・前三志願', color:'#2d6a4f', courses:[
+      {name:'116再戰學測台財法',    date:'115/8/18', end:'116/1/16', price:'$128,000'},
+      {name:'116再戰學測前三志願班',date:'115/8/17', end:'116/1/16', price:'$128,000'},
+    ]},
+    {label:'💻 線上班', color:'#5c5c00', courses:[
+      {name:'116再戰學測線上台財法', date:'115/8/25', end:'116/1/16', price:'$108,000'},
+      {name:'116再戰學測線上醫科班', date:'115/7/20', end:'116/1/16', price:'$118,000'},
+    ]},
+    {label:'📖 線上單科', color:'#9b2335', courses:[
+      {name:'國文線上單科', date:'115/7/20–116/1/21', price:'$25,800'},
+      {name:'英文線上單科', date:'115/7/20–116/1/21', price:'$25,800'},
+      {name:'數學線上單科', date:'115/7/20–116/1/21', price:'$42,000'},
+      {name:'自然線上單科', date:'115/7/20–116/1/21', price:'$45,000'},
+      {name:'社會線上單科', date:'115/8/25–116/1/21', price:'$40,000'},
+    ]},
+  ];
+  return `
+  <div class="premium-card" style="margin-bottom:13px">
+    <div class="prem-name">116 再戰學測　重考生完整備考方案</div>
+    <div class="prem-desc">所有班別均至 116/1/16 · 全科衝刺 · 多次模擬考 · 詳洽招生老師</div>
+  </div>
+  <div class="section-title">📚 課程班別一覽</div>
+  ${tiers.map(t=>`
+  <div class="subject-card" style="margin-bottom:10px">
+    <div class="subject-head" style="background:${t.color}"><span class="subject-label">${t.label}</span></div>
+    ${t.courses.map(c=>`
+    <div class="course-row">
+      <div><div class="c-name">${c.name}</div><div class="c-meta">開課 ${c.date}${c.end?'　結業 '+c.end:''}</div></div>
+      <div class="c-price">${c.price}</div>
+    </div>`).join('')}
+  </div>`).join('')}
+  <button class="cta-btn" onclick="switchTab('config');switchGrade('gr','config')">🧮 開始選課配置 →</button>
+  <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師 · 02-2314-5818</div>`;}
+
 // ═══════ CONFIG SIDEBAR ═══════
 function buildConfigSidebar(gid){
   const g=GRADE_DATA[gid];
@@ -826,6 +911,13 @@ function sName(n){
           .replace(/英文複習（Penny）/,'英複P').replace(/英文複習（Gary）/,'英複G').replace(/英文複習（Fran）/,'英複F')
           .replace(/國文複習/,'國複').replace(/自然複習/,'自複').replace(/社會複習/,'社複')
           .replace(/讀考班（7-8月）/,'讀考7-8').replace(/讀考班（9月-1月）/,'讀考9-1')
+          .replace(/國文線上單科/,'國線').replace(/英文線上單科/,'英線').replace(/數學線上單科/,'數線')
+          .replace(/自然線上單科/,'自線').replace(/社會線上單科/,'社線')
+          .replace(/116再戰學測線上台財法/,'線上台財').replace(/116再戰學測線上醫科班/,'線上醫')
+          .replace(/116再戰學測醫科班/,'醫科').replace(/116再戰學測超醫A班/,'超醫A').replace(/116再戰學測超醫班/,'超醫')
+          .replace(/116再戰學測再醫A班/,'再醫A').replace(/116再戰學測新醫班/,'新醫')
+          .replace(/116再戰學測頂醫A班/,'頂醫A').replace(/116再戰學測頂醫班/,'頂醫')
+          .replace(/116再戰學測台財法/,'台財法').replace(/116再戰學測前三志願班/,'前三志')
           .replace(/數學$/,'數').replace(/英文$/,'英').replace(/物理$/,'物')
           .replace(/化學$/,'化').replace(/國文$/,'國').replace(/社會$/,'社').replace(/自然$/,'自');
 }
