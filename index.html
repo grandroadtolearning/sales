@@ -421,7 +421,7 @@ const GRADE_DATA = {
       {id:'gr-nmed',  group:'iyaed', color:'#1a1a2e', name:'116再戰學測新醫班',    tag:'115/8/17–116/1/16', day:-1,slot:'tbd',price:148000,excludeCombo:true},
       // 頂醫班
       {id:'gr-tmed',  group:'top',   color:'#1d3557', name:'116再戰學測頂醫班',    tag:'115/8/4–116/1/16',  day:-1,slot:'tbd',price:138000,excludeCombo:true},
-      {id:'gr-tmedA', group:'top',   color:'#1d3557', name:'116再戰學測頂醫A班',   tag:'115/8/11–116/1/16', day:-1,slot:'tbd',price:138000,excludeCombo:true},
+      {id:'gr-tmedA', group:'top',   color:'#1d3557', name:'116再戰學測頂醫A班',   tag:'115/8/11–116/1/16', day:-1,slot:'tbd',price:128000,excludeCombo:true},
       // 台財法・前三志願
       {id:'gr-tfl',   group:'gen',   color:'#2d6a4f', name:'116再戰學測台財法',    tag:'115/8/18–116/1/16', day:-1,slot:'tbd',price:128000,excludeCombo:true},
       {id:'gr-top3',  group:'gen',   color:'#2d6a4f', name:'116再戰學測前三志願班',tag:'115/8/17–116/1/16', day:-1,slot:'tbd',price:128000,excludeCombo:true},
@@ -444,6 +444,20 @@ const GRADE_DATA = {
     ],
     combo:[],
   },
+};
+
+// 重考班各班師資明細
+const GR_COURSE_DETAIL={
+  'gr-med':   {loc:'台北 U4C',           date:'7/13', subs:[['國','怡樺20＋古祥4'],['英','Fran24'],['數','解老師21＋解涵清21'],['物','張翔12'],['化','黃鑫團隊15'],['生','游夏9＋楊鳴8'],['科','蕭騏10']]},
+  'gr-rmedA': {loc:'台北 4F',             date:'8/3',  subs:[['國','怡樺20＋古祥4'],['英','Fran24'],['數','解老師21＋解涵清21'],['物','小黑13'],['化','金刀14'],['生','游夏9＋楊鳴8'],['科','妡玉10']]},
+  'gr-tmed':  {loc:'台北忠孝100中教室',  date:'8/4',  subs:[['國','古祥24'],['英','Penny24'],['數','魏老師42'],['物','朱正明10'],['化','黃鑫團隊15'],['生','李毅10'],['科','蕭騏10']]},
+  'gr-smed':  {loc:'台北本3F',            date:'8/12', subs:[['國','怡樺20＋古祥4'],['英','林揚24'],['數','陳建州42'],['物','羅文絜14'],['化','金刀14'],['生','游夏17'],['科','蕭騏10']]},
+  'gr-tmedA': {loc:'台北許昌1F',          date:'8/11', subs:[['國','韻慈24'],['英','Jerry24'],['數','洪宇42'],['物','陸怡中10'],['化','黃鑫團隊15'],['生','李毅10'],['科','妡玉10']]},
+  'gr-nmed':  {loc:'台北 U4A',            date:'8/17', subs:[['國','古祥16＋怡樺8'],['英','林揚24'],['數','解老師21＋解涵清21'],['物','羅文絜14'],['化','金刀14'],['生','李毅18'],['科','妡玉10']]},
+  'gr-smedA': {loc:'台北忠孝100大教室',  date:'8/19', subs:[['國','葉常泓24'],['英','Jerry24'],['數','陳建州42'],['物','小黑13'],['化','金刀14'],['生','李毅18'],['科','蕭騏10']]},
+  'gr-tfl':   {loc:'台北忠孝102中教室',  date:'8/18', subs:[['國','古祥24'],['英','Fran24'],['數','魏老師42'],['歷','徐偉14'],['地','創宏14'],['公','雪雲14']]},
+  'gr-omed':  {loc:'線上',               date:'7/20', subs:[['國','怡樺20＋古祥4'],['英','Fran24'],['數','解老師21＋解涵清21'],['物','張翔12'],['化','金刀14'],['生','游夏9＋楊鳴8'],['科','蕭騏10']]},
+  'gr-otfl':  {loc:'線上',               date:'8/25', subs:[['國','古祥24'],['英','Fran24'],['數','魏老師42'],['歷','徐偉14'],['地','創宏14'],['公','雪雲14']]},
 };
 
 const DAYS=['日','一','二','三','四','五','六'];
@@ -746,7 +760,7 @@ function flyerGR(g){
     ]},
     {label:'⭐ 頂醫班', color:'#1d3557', courses:[
       {name:'116再戰學測頂醫班',   date:'115/8/4',  end:'116/1/16', price:'$138,000'},
-      {name:'116再戰學測頂醫A班',  date:'115/8/11', end:'116/1/16', price:'$138,000'},
+      {name:'116再戰學測頂醫A班',  date:'115/8/11', end:'116/1/16', price:'$128,000'},
     ]},
     {label:'📘 台財法・前三志願', color:'#2d6a4f', courses:[
       {name:'116再戰學測台財法',    date:'115/8/18', end:'116/1/16', price:'$128,000'},
@@ -779,8 +793,46 @@ function flyerGR(g){
       <div class="c-price">${c.price}</div>
     </div>`).join('')}
   </div>`).join('')}
+  <div class="section-title" style="margin-top:16px">📋 各班師資 &amp; 堂數對照</div>
+  ${g.courses.filter(c=>GR_COURSE_DETAIL[c.id]).map(c=>{
+    const d=GR_COURSE_DETAIL[c.id];
+    const SC={'國':'#9b2335','英':'#1d3557','數':'#2d6a4f','物':'#5c3d8f','化':'#0e7c7b','生':'#c45c00','科':'#1a5c3a','歷':'#7a3a1a','地':'#3a5c1a','公':'#1a4a7a'};
+    return `<div style="border:1.5px solid #dde2ec;border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+      <div onclick="toggleGR('${c.id}')" style="background:${c.color};color:#fff;padding:12px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;-webkit-user-select:none">
+        <div>
+          <div style="font-size:13px;font-weight:800;letter-spacing:.3px">${c.name}</div>
+          <div style="font-size:11px;opacity:.75;margin-top:3px">📍 ${d.loc} &ensp;|&ensp; 115/${d.date} 開班</div>
+        </div>
+        <span id="arr-${c.id}" style="font-size:14px;transition:transform .3s;display:inline-block;opacity:.85">▼</span>
+      </div>
+      <div id="det-${c.id}" style="display:none;padding:14px 12px 12px;background:#f9fafd">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px">
+          ${d.subs.map(([sub,t])=>{
+            const sc=SC[sub]||'#555';
+            const teachers=t.split('＋').map(seg=>{const m=seg.match(/^(.+?)(\d+)$/);return m?{name:m[1],hrs:m[2]}:{name:seg,hrs:''};});
+            return `<div style="background:#fff;border-radius:10px;border:1.5px solid ${sc}28;padding:11px 8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+              <div style="background:${sc};color:#fff;border-radius:6px;padding:2px 12px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:9px;letter-spacing:.5px">${sub}</div>
+              ${teachers.map(({name,hrs},i)=>`${i>0?`<div style="border-top:1px dashed #e0e0e0;margin:7px 0"></div>`:''}
+                <div style="font-size:13px;font-weight:700;color:#1a1a2e;line-height:1.3">${name}</div>
+                ${hrs?`<div style="margin-top:3px;display:inline-block;background:${sc}18;color:${sc};border-radius:20px;padding:1px 9px;font-size:10px;font-weight:700">${hrs} 堂</div>`:''}
+              `).join('')}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('')}
   <button class="cta-btn" onclick="switchTab('config');switchGrade('gr','config')">🧮 開始選課配置 →</button>
   <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師 · 02-2314-5818</div>`;}
+
+function toggleGR(id){
+  const det=document.getElementById('det-'+id);
+  const arr=document.getElementById('arr-'+id);
+  if(!det) return;
+  const open=det.style.display!=='none';
+  det.style.display=open?'none':'block';
+  if(arr) arr.style.transform=open?'':'rotate(180deg)';
+}
 
 // ═══════ CONFIG SIDEBAR ═══════
 function buildConfigSidebar(gid){
