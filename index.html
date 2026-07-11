@@ -464,6 +464,7 @@ const DAYS=['日','一','二','三','四','五','六'];
 const SLOTS=['早','午','晚'];
 let activeGradeFlyer='g1', activeGradeConfig='g1';
 let selected=new Set();
+let grVisible=new Set(); // 重考班客戶展示選取
 let g3MathChoice=null; // '建州'|'解創智'|'魏上智'
 let g3JulTrack=null, g3JulMath=null, g3JulChi=null, g3JulEng=null;
 let g3JulStep=1;
@@ -793,17 +794,23 @@ function flyerGR(g){
       <div class="c-price">${c.price}</div>
     </div>`).join('')}
   </div>`).join('')}
-  <div class="section-title" style="margin-top:16px">📋 各班師資 &amp; 堂數對照</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px">
+    <div class="section-title" style="margin:0">📋 各班師資 &amp; 堂數對照</div>
+    <button onclick="showGRCustomer()" style="background:#1a1a2e;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)">👁 客戶展示模式</button>
+  </div>
   ${g.courses.filter(c=>GR_COURSE_DETAIL[c.id]).map(c=>{
     const d=GR_COURSE_DETAIL[c.id];
     const SC={'國':'#9b2335','英':'#1d3557','數':'#2d6a4f','物':'#5c3d8f','化':'#0e7c7b','生':'#c45c00','科':'#1a5c3a','歷':'#7a3a1a','地':'#3a5c1a','公':'#1a4a7a'};
     return `<div style="border:1.5px solid #dde2ec;border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)">
-      <div onclick="toggleGR('${c.id}')" style="background:${c.color};color:#fff;padding:12px 15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;-webkit-user-select:none">
-        <div>
+      <div style="background:${c.color};color:#fff;padding:12px 15px;display:flex;justify-content:space-between;align-items:center">
+        <div onclick="toggleGR('${c.id}')" style="flex:1;cursor:pointer;user-select:none;-webkit-user-select:none;min-width:0">
           <div style="font-size:13px;font-weight:800;letter-spacing:.3px">${c.name}</div>
           <div style="font-size:11px;opacity:.75;margin-top:3px">📍 ${d.loc} &ensp;|&ensp; 115/${d.date} 開班</div>
         </div>
-        <span id="arr-${c.id}" style="font-size:14px;transition:transform .3s;display:inline-block;opacity:.85">▼</span>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button id="vis-btn-${c.id}" onclick="event.stopPropagation();toggleGRVisible('${c.id}')" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap">＋ 選取</button>
+          <span id="arr-${c.id}" onclick="toggleGR('${c.id}')" style="font-size:14px;transition:transform .3s;display:inline-block;opacity:.85;cursor:pointer">▼</span>
+        </div>
       </div>
       <div id="det-${c.id}" style="display:none;padding:14px 12px 12px;background:#f9fafd">
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px">
@@ -824,6 +831,51 @@ function flyerGR(g){
   }).join('')}
   <button class="cta-btn" onclick="switchTab('config');switchGrade('gr','config')">🧮 開始選課配置 →</button>
   <div class="flyer-footer">得勝者文教 · 詳洽現場招生老師 · 02-2314-5818</div>`;}
+
+function toggleGRVisible(id){
+  if(grVisible.has(id)) grVisible.delete(id); else grVisible.add(id);
+  const btn=document.getElementById('vis-btn-'+id);
+  if(!btn) return;
+  const on=grVisible.has(id);
+  btn.style.background=on?'rgba(34,197,94,.9)':'rgba(255,255,255,.15)';
+  btn.style.borderColor=on?'#22c55e':'rgba(255,255,255,.4)';
+  btn.textContent=on?'✓ 已選':'＋ 選取';
+}
+
+function showGRCustomer(){
+  if(grVisible.size===0){alert('請先點「＋ 選取」選取要展示的班別');return;}
+  const SC={'國':'#9b2335','英':'#1d3557','數':'#2d6a4f','物':'#5c3d8f','化':'#0e7c7b','生':'#c45c00','科':'#1a5c3a','歷':'#7a3a1a','地':'#3a5c1a','公':'#1a4a7a'};
+  const g=GRADE_DATA['gr'];
+  const html=g.courses.filter(c=>grVisible.has(c.id)&&GR_COURSE_DETAIL[c.id]).map(c=>{
+    const d=GR_COURSE_DETAIL[c.id];
+    const subsHtml=d.subs.map(([sub,t])=>{
+      const sc=SC[sub]||'#555';
+      const teachers=t.split('＋').map(seg=>{const m=seg.match(/^(.+?)(\d+)$/);return m?{name:m[1],hrs:m[2]}:{name:seg,hrs:''};});
+      return `<div style="background:#fff;border-radius:12px;border:1.5px solid ${sc}22;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+        <div style="background:${sc};color:#fff;border-radius:6px;padding:2px 12px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:11px;letter-spacing:.5px">${sub}</div>
+        ${teachers.map(({name,hrs},i)=>`${i>0?'<div style="border-top:1px dashed #e0e0e0;margin:8px 0"></div>':''}
+          <div style="font-size:15px;font-weight:800;color:#1a1a2e">${name}</div>
+          ${hrs?`<div style="margin-top:5px;display:inline-block;background:${sc}18;color:${sc};border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700">${hrs} 堂</div>`:''}
+        `).join('')}
+      </div>`;
+    }).join('');
+    return `<div style="background:#fff;border-radius:16px;margin-bottom:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1)">
+      <div style="background:${c.color};color:#fff;padding:18px 22px">
+        <div style="font-size:17px;font-weight:800;letter-spacing:.3px">${c.name}</div>
+        <div style="font-size:12px;opacity:.8;margin-top:5px">📍 ${d.loc} &nbsp;·&nbsp; 115/${d.date} 開班 → 116/1/16 結業 &nbsp;·&nbsp; $${c.price.toLocaleString()}</div>
+      </div>
+      <div style="padding:16px 14px;background:#f9fafd">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px">${subsHtml}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('gr-customer-body').innerHTML=html;
+  document.getElementById('gr-customer-modal').style.display='flex';
+}
+
+function hideGRCustomer(){
+  document.getElementById('gr-customer-modal').style.display='none';
+}
 
 function toggleGR(id){
   const det=document.getElementById('det-'+id);
@@ -1157,6 +1209,17 @@ renderConfig();
       </button>
     </div>
   </div>
+</div>
+<!-- 重考班客戶展示 Modal -->
+<div id="gr-customer-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#eef2fa;z-index:9999;flex-direction:column">
+  <div style="background:#1a1a2e;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.25)">
+    <div>
+      <div style="font-size:15px;font-weight:800;letter-spacing:.3px">116 再戰學測 · 課程資訊</div>
+      <div style="font-size:11px;opacity:.55;margin-top:2px">得勝者文教 · 以下為您推薦的班別</div>
+    </div>
+    <button onclick="hideGRCustomer()" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;font-weight:700">✕ 關閉</button>
+  </div>
+  <div id="gr-customer-body" style="padding:20px;max-width:760px;margin:0 auto;width:100%;box-sizing:border-box;overflow-y:auto;flex:1"></div>
 </div>
 </body>
 </html>
