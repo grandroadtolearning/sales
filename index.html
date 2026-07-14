@@ -1210,6 +1210,373 @@ renderConfig();
     </div>
   </div>
 </div>
+<!-- ===== 台大名額 FAQ ===== -->
+<script>
+const NTU_DATA=[
+  {c:'文學院',d:'中國文學系',a:23,e:19},{c:'文學院',d:'外國語文學系',a:49,e:43},
+  {c:'文學院',d:'歷史學系',a:23,e:22},{c:'文學院',d:'哲學系',a:20,e:23},
+  {c:'文學院',d:'人類學系',a:11,e:20},{c:'文學院',d:'圖書資訊學系',a:23,e:15},
+  {c:'文學院',d:'日本語文學系',a:25,e:21},{c:'文學院',d:'戲劇學系（男）',a:7,e:9},
+  {c:'文學院',d:'戲劇學系（女）',a:5,e:10},
+  {c:'理學院',d:'數學系',a:17,e:15},{c:'理學院',d:'物理學系',a:28,e:15},
+  {c:'理學院',d:'化學系',a:24,e:32},{c:'理學院',d:'地質科學系',a:25,e:12},
+  {c:'理學院',d:'心理學系',a:22,e:35},{c:'理學院',d:'地理環境資源學系',a:15,e:17},
+  {c:'理學院',d:'大氣科學系',a:20,e:17},
+  {c:'社會科學院',d:'政治學系政治理論組',a:18,e:30},{c:'社會科學院',d:'政治學系國際關係組',a:17,e:20},
+  {c:'社會科學院',d:'政治學系公共行政組',a:18,e:30},{c:'社會科學院',d:'經濟學系A組',a:20,e:23},
+  {c:'社會科學院',d:'經濟學系B組',a:12,e:8},{c:'社會科學院',d:'經濟學系C組',a:27,e:null},
+  {c:'社會科學院',d:'社會學系',a:22,e:22},{c:'社會科學院',d:'社會工作學系',a:16,e:31},
+  {c:'醫學院',d:'醫學系',a:51,e:47},{c:'醫學院',d:'醫學系（公費生）',a:12,e:5},
+  {c:'醫學院',d:'牙醫學系',a:11,e:16},{c:'醫學院',d:'藥學系',a:23,e:17},
+  {c:'醫學院',d:'醫學檢驗暨生物技術學系',a:20,e:16},{c:'醫學院',d:'護理學系',a:25,e:15},
+  {c:'醫學院',d:'物理治療學系',a:16,e:17},{c:'醫學院',d:'職能治療學系',a:21,e:19},
+  {c:'工學院',d:'土木工程學系',a:55,e:44},{c:'工學院',d:'機械工程學系',a:82,e:44},
+  {c:'工學院',d:'化學工程學系',a:63,e:38},{c:'工學院',d:'工程科學及海洋工程學系',a:28,e:14},
+  {c:'工學院',d:'材料科學與工程學系',a:33,e:16},{c:'工學院',d:'醫學工程學系',a:13,e:14},
+  {c:'農學院',d:'農藝學系',a:14,e:15},{c:'農學院',d:'生物環境系統工程學系',a:29,e:18},
+  {c:'農學院',d:'農業化學系',a:25,e:14},{c:'農學院',d:'森林環境暨資源學系',a:39,e:21},
+  {c:'農學院',d:'動物科學技術學系',a:17,e:17},{c:'農學院',d:'農業經濟學系',a:19,e:18},
+  {c:'農學院',d:'園藝暨景觀學系',a:24,e:26},{c:'農學院',d:'獸醫學系',a:29,e:27},
+  {c:'農學院',d:'生物產業傳播暨發展學系',a:20,e:21},{c:'農學院',d:'生物機電工程學系',a:20,e:17},
+  {c:'農學院',d:'昆蟲學系',a:17,e:12},{c:'農學院',d:'植物病理與微生物學系',a:17,e:22},
+  {c:'管理學院',d:'工商管理學系企業管理組',a:28,e:22},{c:'管理學院',d:'工商管理學系科技管理組',a:24,e:19},
+  {c:'管理學院',d:'會計學系',a:42,e:57},{c:'管理學院',d:'財務金融學系',a:50,e:43},
+  {c:'管理學院',d:'國際企業學系',a:48,e:30},{c:'管理學院',d:'資訊管理學系',a:35,e:17},
+  {c:'管理學院',d:'資訊管理學系（資安組）',a:2,e:null},
+  {c:'公共衛生學院',d:'公共衛生學系',a:25,e:17},
+  {c:'電機資訊學院',d:'電機工程學系',a:92,e:44},{c:'電機資訊學院',d:'資訊工程學系',a:57,e:32},
+  {c:'電機資訊學院',d:'資訊工程學系（APCS組）',a:4,e:null},{c:'電機資訊學院',d:'資訊工程學系（資安組）',a:2,e:null},
+  {c:'法律學院',d:'法律學系法學組',a:18,e:28},{c:'法律學院',d:'法律學系司法組',a:18,e:23},
+  {c:'法律學院',d:'法律學系財經法學組',a:18,e:25},
+  {c:'生命科學院',d:'生命科學系',a:32,e:15},{c:'生命科學院',d:'生化科技學系',a:29,e:14},
+  {c:'其他',d:'國際體育運動事務學士學位學程',a:5,e:2},
+];
+const NTU_COL={'文學院':'#9b2335','理學院':'#1d3557','社會科學院':'#2d6a4f','醫學院':'#7b2d8b','工學院':'#1a5c3a','農學院':'#5c6000','管理學院':'#1a4a7a','公共衛生學院':'#0e7c7b','電機資訊學院':'#1a1a2e','法律學院':'#7a3a1a','生命科學院':'#3a5c1a','其他':'#666'};
+
+function openNTUModal(){
+  const tbody=document.getElementById('ntu-tbody');
+  if(!tbody.dataset.loaded){
+    tbody.dataset.loaded='1';
+    let prev='';
+    tbody.innerHTML=NTU_DATA.map(d=>{
+      const col=NTU_COL[d.c]||'#555';
+      const newG=d.c!==prev; prev=d.c;
+      const exam=d.e==null?'—':d.e;
+      const tot=d.a+(d.e||0);
+      return `<tr class="ntu-row" data-q="${d.d} ${d.c}" style="${newG?'border-top:2px solid '+col+'55':''}">
+        <td style="padding:7px 10px;font-size:11px;font-weight:700;white-space:nowrap;color:${col};border-left:3px solid ${col}">${d.c}</td>
+        <td style="padding:7px 10px;font-size:13px">${d.d}</td>
+        <td style="padding:7px 10px;text-align:center;color:#1d3557;font-weight:700;font-size:13px">${d.a}</td>
+        <td style="padding:7px 10px;text-align:center;color:${d.e?'#9b2335':'#aaa'};font-weight:700;font-size:13px">${exam}</td>
+        <td style="padding:7px 10px;text-align:center;font-weight:800;font-size:13px">${tot}</td>
+      </tr>`;
+    }).join('');
+  }
+  document.getElementById('ntu-modal').style.display='flex';
+}
+function closeNTUModal(){
+  document.getElementById('ntu-modal').style.display='none';
+  const s=document.getElementById('ntu-search'); if(s){s.value='';filterNTU('');}
+  const m=document.getElementById('med-search'); if(m){m.value='';filterMED('');}
+}
+function filterNTU(q){
+  const t=q.toLowerCase();
+  document.querySelectorAll('.ntu-row').forEach(r=>{
+    r.style.display=r.dataset.q.toLowerCase().includes(t)?'':'none';
+  });
+}
+
+// ===== 醫科名額 =====
+// 個人申請名額（a114/a113）＋ 分科測驗名額（b114/b113）
+// a114/a113 以圖片數據為主；台大醫/牙醫 數值由 NTU_DATA 交叉確認
+// r: 篩選資訊 [{n:階段, sub:科目組合, cut:門檻}]  ── 資料來源：114年大考中心公告
+// exc: 超額競爭門檻（五科合計），itv:需面試, wrt:需筆試
+const MED_DATA=[
+  // ── 醫學系 ──  (資料來源：114/113年大考中心個申公告 V2)
+  {s:'國立台灣大學',     d:'醫學系',           t:'醫', a114:51,a113:51,b114:47,b113:47, exc:'59',exc113:'59',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥58'},{n:'篩選三',sub:'英+數A+自',cut:'≥44'}],
+   r113:[{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥59'},{n:'篩選三',sub:'英+數A+自',cut:'≥45'}]},
+  {s:'國立陽明交通大學', d:'醫學系（醫師組）',  t:'醫', a114:42,a113:42,b114:0, b113:0,  exc:'58',exc113:'59',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國文',cut:'≥13'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥57'},{n:'篩選三',sub:'英+數A+自',cut:'≥44'}],
+   r113:[{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥58'},{n:'篩選三',sub:'英+數A+自',cut:'≥44'}]},
+  {s:'國立陽明交通大學', d:'醫學系（科學家組）',t:'醫', a114:10,a113:0,  b114:0, b113:0,  exc:'58',exc113:'58',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國+英+數A+自',cut:'≥58'},{n:'篩選二',sub:'英+數A+自',cut:'≥44'}],
+   r113:[{n:'篩選一',sub:'國+英+數A+自',cut:'≥58'},{n:'篩選二',sub:'英+數A+自',cut:'≥44'}]},
+  {s:'國立陽明交通大學', d:'醫學系（工程組）',  t:'醫', a114:10,a113:12,b114:0, b113:0,  exc:'58',exc113:'57',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國+英',cut:'≥29'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥58'},{n:'篩選三',sub:'數A+自',cut:'≥29'}],
+   r113:[{n:'篩選一',sub:'國+英',cut:'≥29'},{n:'篩選二',sub:'國+英+數A+自',cut:'≥57'},{n:'篩選三',sub:'數A+自',cut:'≥28'}]},
+  {s:'國立成功大學',     d:'醫學系',           t:'醫', a114:39,a113:39,b114:95,b113:95, exc:'58',exc113:'59',loc:'台南',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國文',cut:'≥13'},{n:'篩選二',sub:'英文',cut:'≥13'},{n:'篩選三',sub:'數A+自',cut:'≥28'},{n:'篩選四',sub:'國+英+數A+自',cut:'≥58'}],
+   r113:[{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'英文',cut:'≥15'},{n:'篩選三',sub:'數A+自',cut:'≥29'},{n:'篩選四',sub:'國+英+數A+自',cut:'≥59'}]},
+  {s:'臺北醫學大學',     d:'醫學系',           t:'醫', a114:84,a113:84,b114:0, b113:0,  exc:'58',exc113:'59',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國+英+數A+自',cut:'≥57'},{n:'篩選二',sub:'自然',cut:'≥15'},{n:'篩選三',sub:'國+英+數A',cut:'≥43'}],
+   r113:[{n:'篩選一',sub:'國文',cut:'≥13'},{n:'篩選二',sub:'英+數A+自',cut:'≥44'}]},
+  {s:'長庚大學',         d:'醫學系',           t:'醫', a114:54,a113:59,b114:45,b113:45, exc:'59',exc113:'59',loc:'桃園',
+   itv:true, wrt:true,
+   r:   [{n:'篩選一',sub:'國+英+數A+自',cut:'≥59'}],
+   r113:[{n:'篩選一',sub:'國+英+數A+自',cut:'≥59'}]},
+  {s:'馬偕醫學院',       d:'醫學系',           t:'醫', a114:20,a113:20,b114:0, b113:0,  exc:'57',exc113:'56',loc:'台北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'英+數A',cut:'≥27'},{n:'篩選二',sub:'社+自',cut:'≥28'},{n:'篩選三',sub:'英+數A+社+自',cut:'≥57'}],
+   r113:[{n:'篩選一',sub:'數A+自',cut:'≥25'},{n:'篩選二',sub:'英+數A+社+自',cut:'≥55'},{n:'篩選三',sub:'英+社',cut:'≥29'}]},
+  {s:'輔仁大學',         d:'醫學系',           t:'醫', a114:15,a113:15,b114:0, b113:0,  exc:'57',exc113:'57',loc:'新北',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'數A+自',cut:'≥27'},{n:'篩選二',sub:'英+社',cut:'≥29'}],
+   r113:[{n:'篩選一',sub:'數A+自',cut:'≥27'},{n:'篩選二',sub:'英+社',cut:'≥29'}]},
+  {s:'中國醫藥大學',     d:'醫學系',           t:'醫', a114:85,a113:85,b114:0, b113:0,  exc:'56',exc113:'59',loc:'台中',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'國+社',cut:'≥27'},{n:'篩選二',sub:'數A+自',cut:'≥27'},{n:'篩選三',sub:'國+數A+社+自',cut:'≥56'}],
+   r113:[{n:'篩選一',sub:'數A+自',cut:'≥26'},{n:'篩選二',sub:'國+英',cut:'≥29'},{n:'篩選三',sub:'國+英+數A+社+自',cut:'≥56'}]},
+  {s:'中山醫學大學',     d:'醫學系',           t:'醫', a114:70,a113:70,b114:0, b113:0,  exc:'58',exc113:'58',loc:'台中',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'數A+自',cut:'≥26'},{n:'篩選二',sub:'國+英',cut:'≥29'}],
+   r113:[{n:'篩選一',sub:'數A+自',cut:'≥26'},{n:'篩選二',sub:'國+英',cut:'≥29'}]},
+  {s:'慈濟大學',         d:'醫學系',           t:'醫', a114:30,a113:30,b114:0, b113:0,  exc:'56',exc113:'56',loc:'花蓮',
+   itv:true, wrt:false,
+   r:   [{n:'篩選一',sub:'數A',cut:'≥12'},{n:'篩選二',sub:'自然',cut:'≥14'},{n:'篩選三',sub:'國+英',cut:'≥28'},{n:'篩選四',sub:'數A+自',cut:'≥28'}],
+   r113:[{n:'篩選一',sub:'數A',cut:'≥13'},{n:'篩選二',sub:'自然',cut:'≥14'},{n:'篩選三',sub:'國+英',cut:'≥29'}]},
+  // ── 牙醫學系 ──
+  {s:'國立台灣大學',     d:'牙醫學系',       t:'牙醫',a114:11,a113:11,b114:16,b113:16, exc:'59',loc:'台北',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國+英+數A+自',cut:'≥59'},{n:'篩選二',sub:'英+數A+自',cut:'≥45'}]},
+  {s:'國立陽明交通大學', d:'牙醫學系',       t:'牙醫',a114:18,a113:18,b114:20,b113:20, exc:'58',loc:'台北',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國文',cut:'≥12'},{n:'篩選二',sub:'數A+自',cut:'≥28'},{n:'篩選三',sub:'英文',cut:'≥14'},{n:'篩選四',sub:'國+英+數A+自',cut:'≥58'}]},
+  {s:'臺北醫學大學',     d:'牙醫學系',       t:'牙醫',a114:9, a113:9, b114:0, b113:0,  exc:'59',loc:'台北',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國+英',cut:'≥30'},{n:'篩選二',sub:'數A+自',cut:'≥28'},{n:'篩選三',sub:'國+英+數A+自',cut:'≥59'}]},
+  {s:'中國醫藥大學',     d:'牙醫學系',       t:'牙醫',a114:58,a113:57,b114:0, b113:0,  exc:'57',loc:'台中',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國文',cut:'≥13'},{n:'篩選二',sub:'數A',cut:'≥12'},{n:'篩選三',sub:'自然',cut:'≥14'}]},
+  {s:'中山醫學大學',     d:'牙醫學系',       t:'牙醫',a114:30,a113:30,b114:0, b113:0,  exc:'57',loc:'台中',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國+社',cut:'≥24'},{n:'篩選二',sub:'數A+自',cut:'≥28'},{n:'篩選三',sub:'國+數A+社+自',cut:'≥57'}]},
+  {s:'高雄醫學大學',     d:'牙醫學系',       t:'牙醫',a114:46,a113:48,b114:0, b113:0,  exc:'57',loc:'高雄',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'數A',cut:'≥12'},{n:'篩選三',sub:'自然',cut:'≥14'},{n:'篩選四',sub:'英文',cut:'≥15'}]},
+  // ── 中醫學系 ──
+  {s:'長庚大學',         d:'中醫學系',       t:'中醫',a114:29,a113:31,b114:0, b113:0,  exc:'57',loc:'桃園',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國+英+數A',cut:'≥42'},{n:'篩選二',sub:'自然',cut:'≥15'}]},
+  {s:'中國醫藥大學',     d:'中醫學系甲組',   t:'中醫',a114:39,a113:39,b114:0, b113:0,  exc:'57',loc:'台中',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'英+數A',cut:'≥27'},{n:'篩選二',sub:'自然',cut:'≥15'}]},
+  {s:'中國醫藥大學',     d:'中醫學系乙組',   t:'中醫',a114:42,a113:42,b114:0, b113:0,  exc:'56',loc:'台中',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國文',cut:'≥14'},{n:'篩選二',sub:'英+數A',cut:'≥27'},{n:'篩選三',sub:'自然',cut:'≥15'}]},
+  {s:'國立陽明交通大學', d:'中醫學系',       t:'中醫',a114:16,a113:10,b114:0, b113:0,  exc:'57',loc:'台北',
+   itv:true, wrt:false,
+   r:[{n:'篩選一',sub:'國文',cut:'≥15'},{n:'篩選二',sub:'英+數A+自',cut:'≥42'}]},
+];
+
+const MED_COL={醫:'#7b2d8b',牙醫:'#1d6a87',中醫:'#2d6a4f'};
+
+function buildMedRTbl(rounds,col){
+  if(!rounds||!rounds.length) return '<div style="font-size:12px;color:#bbb;padding:8px 10px">無資料</div>';
+  return `<table style="width:100%;border-collapse:collapse;background:#fafafa;border-radius:8px;overflow:hidden">
+    <thead><tr style="background:#f0f0f0">
+      <th style="padding:6px 10px;text-align:left;font-size:10px;color:#888;font-weight:700">階段</th>
+      <th style="padding:6px 10px;text-align:left;font-size:10px;color:#888;font-weight:700">篩選科目</th>
+      <th style="padding:6px 8px;text-align:right;font-size:10px;color:#888;font-weight:700">門檻</th>
+    </tr></thead>
+    <tbody>${rounds.map(r=>`<tr style="border-bottom:1px solid #f3f3f3">
+      <td style="padding:7px 10px;font-size:12px;font-weight:700;color:#555;white-space:nowrap">${r.n}</td>
+      <td style="padding:7px 10px;font-size:12px;color:#1a1a2e">${r.sub}</td>
+      <td style="padding:7px 8px;text-align:right;font-size:13px;font-weight:900;color:${col};white-space:nowrap">${r.cut||'—'}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+function showMedDetail(i){
+  const d=MED_DATA[i];
+  const col=MED_COL[d.t]||'#555';
+  const iB=d.itv
+    ?'<span style="background:#1a7a2a;color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px">✓ 需面試</span>'
+    :'<span style="background:#ccc;color:#fff;font-size:11px;padding:4px 11px;border-radius:20px">免面試</span>';
+  const wB=d.wrt
+    ?'<span style="background:#c0392b;color:#fff;font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px">✓ 需筆試</span>'
+    :'<span style="background:#e0e0e0;color:#888;font-size:11px;padding:4px 11px;border-radius:20px">免筆試</span>';
+  const excBox=(exc,yr,hi)=>exc&&exc!=='—'
+    ?`<div style="flex:1;background:${hi?'#fff8e7':'#f7f7f7'};border:2px solid ${hi?'#e8b84b':'#ddd'};border-radius:10px;padding:9px 12px">
+        <div style="font-size:9px;color:${hi?'#7a5c00':'#aaa'};font-weight:700;margin-bottom:1px">${yr} 超額門檻</div>
+        <div style="font-size:9px;color:#bbb;margin-bottom:4px">五科合計</div>
+        <div style="font-size:22px;font-weight:900;color:${hi?'#9b2335':'#888'}">${exc}<span style="font-size:12px">+</span></div>
+      </div>`:'';
+  const b114=excBox(d.exc,'114年',true);
+  const b113=excBox(d.exc113,'113年',false);
+  const excHtml=(b114||b113)
+    ?`<div style="display:flex;gap:8px;margin-bottom:12px">${b114}${b113}</div>`
+    :'<div style="background:#f5f5f5;border-radius:10px;padding:10px 14px;font-size:12px;color:#aaa;margin-bottom:12px;text-align:center">此校無超額競爭機制</div>';
+  const has113=d.r113&&d.r113.length>0;
+  document.getElementById('med-detail-body').innerHTML=`
+    <div style="border-left:4px solid ${col};padding:3px 0 3px 12px;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:800;color:#1a1a2e">${d.s}</div>
+      <div style="font-size:13px;color:${col};font-weight:700;margin-top:2px">${d.d} ｜ ${d.loc}</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="background:${col};color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px">114年</span>
+      <span style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:1px">個人申請篩選</span>
+    </div>
+    <div style="margin-bottom:14px">${buildMedRTbl(d.r,col)}</div>
+    ${has113?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="background:#888;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px">113年</span>
+      <span style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:1px">個人申請篩選</span>
+    </div>
+    <div style="margin-bottom:14px">${buildMedRTbl(d.r113,'#888')}</div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${iB}${wB}</div>
+    ${excHtml}
+    <div style="font-size:10px;color:#ccc;line-height:1.6">⚠️ 資料以大考中心公告為參考，各年度可能調整，請以當年公告為準</div>
+  `;
+  document.getElementById('med-detail-modal').style.display='flex';
+}
+function hideMedDetail(){
+  document.getElementById('med-detail-modal').style.display='none';
+}
+
+function renderMED(){
+  const tbody=document.getElementById('med-tbody');
+  if(tbody.dataset.loaded) return;
+  tbody.dataset.loaded='1';
+  let prev='';
+  tbody.innerHTML=MED_DATA.map((d,i)=>{
+    const col=MED_COL[d.t]||'#555';
+    const newG=d.d!==prev; prev=d.d;
+    const tag=`<span style="background:${col};color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap">${d.t}</span>`;
+    const fmt=(a,b)=>b>0?`<b>${a}</b><span style="font-size:10px;color:#aaa;margin-left:2px">+${b}</span>`:`<b>${a}</b>`;
+    const t114=d.a114+d.b114, t113=d.a113+d.b113;
+    const diff=t114-t113;
+    const diffSpan=diff>0?` <span style="color:#1a7a2a;font-size:10px;font-weight:700">▲${diff}</span>`:diff<0?` <span style="color:#c0392b;font-size:10px;font-weight:700">▼${Math.abs(diff)}</span>`:'';
+    return `<tr class="med-row" data-q="${d.s} ${d.d} ${d.t} ${d.loc}" style="border-bottom:1px solid #f0f0f0${newG?';border-top:2px solid '+col+'55':''}">
+      <td style="padding:7px 10px;font-size:12px;font-weight:700;border-left:3px solid ${col};white-space:nowrap">${d.s}</td>
+      <td style="padding:7px 10px;font-size:12px">${d.d}</td>
+      <td style="padding:7px 6px;text-align:center">${tag}</td>
+      <td style="padding:7px 8px;text-align:center;font-size:11px;color:#777">${d.loc}</td>
+      <td style="padding:7px 10px;text-align:center;font-size:13px;color:#1a1a2e">${fmt(d.a114,d.b114)}</td>
+      <td style="padding:7px 10px;text-align:center;font-size:13px;color:#888">${fmt(d.a113,d.b113)}${diffSpan}</td>
+      <td style="padding:7px 10px;text-align:center">${d.exc==='—'?'<span style="color:#bbb;font-size:13px">—</span>':`<span style="font-weight:900;font-size:14px;color:#9b2335">${d.exc}+</span>`}</td>
+      <td style="padding:5px 8px;text-align:center">
+        <button onclick="showMedDetail(${i})" style="background:#f0f3ff;border:1.5px solid #c5d0ee;color:#2244aa;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">詳細 ›</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterMED(q){
+  const t=q.toLowerCase();
+  document.querySelectorAll('.med-row').forEach(r=>{
+    r.style.display=r.dataset.q.toLowerCase().includes(t)?'':'none';
+  });
+}
+
+function switchFAQTab(t){
+  ['ntu','med'].forEach(id=>{
+    const p=document.getElementById('fpanel-'+id);
+    const b=document.getElementById('ftab-'+id);
+    if(p) p.style.display=id===t?'flex':'none';
+    if(b){
+      b.style.background=id===t?'rgba(255,255,255,.15)':'transparent';
+      b.style.color=id===t?'#fff':'rgba(255,255,255,.55)';
+      b.style.borderBottom=id===t?'3px solid #e8b84b':'3px solid transparent';
+    }
+  });
+  if(t==='med') renderMED();
+}
+</script>
+
+<button onclick="openNTUModal()" style="position:fixed;bottom:24px;right:20px;background:#1a1a2e;color:#fff;border:none;border-radius:50px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.35);z-index:1001;display:flex;align-items:center;gap:7px">
+  📊 升學資料
+</button>
+
+<div id="ntu-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:9998;flex-direction:column;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
+  <div style="background:#fff;border-radius:16px;width:min(760px,100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)">
+    <!-- Header + Tab Nav -->
+    <div style="background:#1a1a2e;color:#fff;flex-shrink:0">
+      <div style="padding:14px 20px 10px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:15px;font-weight:800">📊 升學參考資料</div>
+        <button onclick="closeNTUModal()" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:700;flex-shrink:0">✕ 關閉</button>
+      </div>
+      <div style="display:flex;padding:0 12px">
+        <button id="ftab-ntu" onclick="switchFAQTab('ntu')" style="padding:8px 18px;background:rgba(255,255,255,.15);color:#fff;border:none;border-bottom:3px solid #e8b84b;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;margin-right:4px;transition:all .15s">🎓 台大名額</button>
+        <button id="ftab-med" onclick="switchFAQTab('med')" style="padding:8px 18px;background:transparent;color:rgba(255,255,255,.55);border:none;border-bottom:3px solid transparent;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;margin-right:4px;transition:all .15s">🏥 醫科名額</button>
+      </div>
+    </div>
+    <!-- NTU Panel -->
+    <div id="fpanel-ntu" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div style="padding:10px 14px;background:#f9fafd;border-bottom:1px solid #eee;flex-shrink:0">
+        <input id="ntu-search" oninput="filterNTU(this.value)" placeholder="🔍 搜尋學系或學院…" style="width:100%;box-sizing:border-box;padding:9px 14px;border:1.5px solid #dde2ec;border-radius:20px;font-size:13px;outline:none;background:#fff">
+      </div>
+      <div style="padding:7px 14px;background:#f0f3f9;border-bottom:1px solid #eee;flex-shrink:0;display:flex;gap:18px;font-size:12px;color:#555;flex-wrap:wrap">
+        <span>共 <b style="color:#1a1a2e">75 系組</b></span>
+        <span>個人申請合計 <b style="color:#1d3557">1,739</b></span>
+        <span>分科測驗合計 <b style="color:#9b2335">1,427</b></span>
+        <span>總計 <b style="color:#1a1a2e">3,166</b></span>
+      </div>
+      <div style="overflow-y:auto;flex:1">
+        <table style="width:100%;border-collapse:collapse">
+          <thead style="position:sticky;top:0;z-index:1">
+            <tr style="background:#1a1a2e;color:#fff">
+              <th style="padding:9px 10px;text-align:left;font-size:11px;white-space:nowrap">學院</th>
+              <th style="padding:9px 10px;text-align:left;font-size:12px">學系（組）</th>
+              <th style="padding:9px 10px;text-align:center;font-size:12px;color:#93c5fd">個人申請</th>
+              <th style="padding:9px 10px;text-align:center;font-size:12px;color:#fca5a5">分科測驗</th>
+              <th style="padding:9px 10px;text-align:center;font-size:12px">合計</th>
+            </tr>
+          </thead>
+          <tbody id="ntu-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- MED Panel -->
+    <div id="fpanel-med" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div style="padding:10px 14px;background:#f9fafd;border-bottom:1px solid #eee;flex-shrink:0">
+        <input id="med-search" oninput="filterMED(this.value)" placeholder="🔍 搜尋學校、科系或地區…" style="width:100%;box-sizing:border-box;padding:9px 14px;border:1.5px solid #dde2ec;border-radius:20px;font-size:13px;outline:none;background:#fff">
+      </div>
+      <div style="padding:7px 14px;background:#f5f0ff;border-bottom:1px solid #e8dff5;flex-shrink:0;display:flex;gap:12px;font-size:12px;color:#555;flex-wrap:wrap;align-items:center">
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#7b2d8b;display:inline-block"></span><b>醫學系</b> 11校（14組）</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#1d6a87;display:inline-block"></span><b>牙醫學系</b> 6校</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#2d6a4f;display:inline-block"></span><b>中醫學系</b> 4校（5組）</span>
+        <span style="margin-left:auto;font-size:10px;color:#aaa">個申＋分科名額（114/113學年）</span>
+      </div>
+      <div style="overflow-y:auto;flex:1">
+        <table style="width:100%;border-collapse:collapse">
+          <thead style="position:sticky;top:0;z-index:1">
+            <tr style="background:#1a1a2e;color:#fff">
+              <th style="padding:9px 10px;text-align:left;font-size:12px;white-space:nowrap">學校</th>
+              <th style="padding:9px 10px;text-align:left;font-size:12px">科系</th>
+              <th style="padding:9px 6px;text-align:center;font-size:11px">類別</th>
+              <th style="padding:9px 8px;text-align:center;font-size:11px">地區</th>
+              <th style="padding:9px 10px;text-align:center;font-size:11px;color:#93c5fd;line-height:1.4">114年<br><span style="font-size:9px;opacity:.7">個申+分科</span></th>
+              <th style="padding:9px 10px;text-align:center;font-size:11px;color:#fca5a5;line-height:1.4">113年<br><span style="font-size:9px;opacity:.7">個申+分科</span></th>
+              <th style="padding:9px 10px;text-align:center;font-size:11px;color:#fde68a;line-height:1.4">超額<br><span style="font-size:9px;opacity:.7">競爭門檻</span></th>
+              <th style="padding:9px 8px;text-align:center;font-size:11px;color:#c0d4ff">詳細</th>
+            </tr>
+          </thead>
+          <tbody id="med-tbody"></tbody>
+        </table>
+      </div>
+      <div style="padding:8px 14px;background:#fafafa;border-top:1px solid #eee;font-size:10px;color:#aaa;flex-shrink:0">
+        ⚠️ 以上為參考資料，個申+分科名額需以大考中心公告為準。「最低總級分」為近年個申篩選之參考值，非絕對保證。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 醫科詳細篩選 Modal -->
+<div id="med-detail-modal" onclick="if(event.target===this)hideMedDetail()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,30,.65);z-index:10000;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;backdrop-filter:blur(3px)">
+  <div style="background:#fff;border-radius:16px;width:min(480px,100%);max-height:85vh;overflow-y:auto;box-shadow:0 12px 50px rgba(0,0,0,.4);padding:22px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <div style="font-size:11px;font-weight:800;color:#bbb;letter-spacing:2px">篩選詳情</div>
+      <button onclick="hideMedDetail()" style="background:#f3f3f3;border:none;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:700;color:#555">✕ 關閉</button>
+    </div>
+    <div id="med-detail-body"></div>
+  </div>
+</div>
+
 <!-- 重考班客戶展示 Modal -->
 <div id="gr-customer-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#eef2fa;z-index:9999;flex-direction:column">
   <div style="background:#1a1a2e;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.25)">
